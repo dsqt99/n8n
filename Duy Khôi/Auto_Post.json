@@ -1,0 +1,565 @@
+{
+  "name": "Auto Post",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        -40
+      ],
+      "id": "19cabbcb-285d-4581-bdb6-81987237e315",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Day",
+              "lookupValue": "={{ $now.minus(4, 'day').format('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -180,
+        -40
+      ],
+      "id": "ec379a54-03f7-4b76-920c-642bf2a69bd8",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        40,
+        -40
+      ],
+      "id": "5d03de04-b983-48b1-b396-8eb86af340b0",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now.plus(15, 'second').format('yyyy-MM-dd HH:mm:ss') }}",
+        "format": "X",
+        "outputFieldName": "timestamp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        900,
+        -20
+      ],
+      "id": "a7d50451-f417-464b-9c8f-17bf7be2ac8a",
+      "name": "post hour"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.message_type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a66d4ca3-dd75-461d-a0a1-9ea3d344c344"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "03624c79-fc25-40b7-8d48-8facd8e9bc38",
+                    "leftValue": "={{ $('Loop Over Items').item.json.message_type }}",
+                    "rightValue": "photo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "83bd460f-d596-4be9-a42b-e85f7b16f889",
+                    "leftValue": "={{ $('Loop Over Items').item.json.message_type }}",
+                    "rightValue": "video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "85d6ab6a-43e6-44f1-a474-a6498a42cf5c",
+                    "leftValue": "={{ $('Loop Over Items').item.json.message_type }}",
+                    "rightValue": "album",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "album"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1160,
+        -40
+      ],
+      "id": "e30ca6ac-8256-4ba1-9048-37f66bd234e7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "List of pages",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID Page",
+              "lookupValue": "={{ $json[\"ID Page\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        560,
+        -20
+      ],
+      "id": "53e663cd-9eb0-411c-a308-c98d7d02d908",
+      "name": "get info page",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/me/feed",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Loop Over Items').first().json.Content }}"
+            },
+            {
+              "name": "published",
+              "value": "true"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('get info page').first().json[\"Access Token\"] }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        -220
+      ],
+      "id": "9029f6bf-c56e-4be8-b0ab-03455b1eb460",
+      "name": "Text Post"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/me/videos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "hi"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('Loop Over Items').first().json.Content }}"
+            },
+            {
+              "name": "file_url",
+              "value": "={{ $('Loop Over Items').first().json.media_url }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('get info page').item.json[\"Access Token\"] }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        200
+      ],
+      "id": "7a8c69e1-1cb4-4fd9-a797-18354b0154fb",
+      "name": "Video Post"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/me/photos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Loop Over Items').first().json.Content }}"
+            },
+            {
+              "name": "url",
+              "value": "={{ $('Loop Over Items').first().json.media_url }}"
+            },
+            {
+              "name": "published",
+              "value": "false"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('get info page').item.json[\"Access Token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1580,
+        -20
+      ],
+      "id": "cc6edee2-5228-40a4-8835-2a5413828511",
+      "name": "Photo Post Unpublish"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/me/feed",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "attached_media",
+              "value": "=[{\"media_fbid\": {{ $json.id }}}]"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Loop Over Items').item.json.Content }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('get info page').first().json[\"Access Token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        -20
+      ],
+      "id": "f2b57254-6e32-4cf9-b231-ef5406670de3",
+      "name": "Photo Post"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        -20
+      ],
+      "id": "905985b9-c4c3-4480-9412-8c436423d3cf",
+      "name": "Wait",
+      "webhookId": "560238b6-760c-48e3-8a5c-a4df2690e515"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "post hour": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Text Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Photo Post Unpublish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Video Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Photo Post Unpublish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get info page": {
+      "main": [
+        [
+          {
+            "node": "post hour",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Post": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video Post": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Post Unpublish": {
+      "main": [
+        [
+          {
+            "node": "Photo Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Post": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "get info page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b7038fb0-349e-429e-88e3-6533f39e75c6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "6fbQDpWVYMH3PbXe",
+  "tags": []
+}

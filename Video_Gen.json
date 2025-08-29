@@ -1,0 +1,220 @@
+{
+  "name": "Video Gen",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "c328ef90-ad2d-4b7e-8946-debfc890d7c1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=1v69anAqHsOog5Vd2RqhHQUj2_xANY4r5",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "a05b376a-1018-4fa0-96af-3bce318d98e2",
+      "name": "Tải ảnh 1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -520,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=1jgYMnERdmyn2iToE--A9HfOss5tZoQ9o",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "f02dfc7f-d9b8-4cc4-afbc-fe0c6e0f6daf",
+      "name": "Tải ảnh 2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -520,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=mkdir -p \"$HOME/n8n_tmp\" && printf \"%s\" \"{{ $json.anh1.data }}\" | base64 -d > \"$HOME/n8n_tmp/anh1.jpg\" && printf \"%s\" \"{{ $json.anh2.data }}\" | base64 -d > \"$HOME/n8n_tmp/anh2.jpg\" && printf \"%s\" \"{{ $json.anh3.data }}\" | base64 -d > \"$HOME/n8n_tmp/anh3.jpg\" && ffmpeg -y -framerate 1 -i \"$HOME/n8n_tmp/anh%d.jpg\" -c:v libx264 -r 30 -pix_fmt yuv420p \"$HOME/n8n_tmp/output.mp4\" && echo \"✅ Video created at: $HOME/n8n_tmp/output.mp4\" A subdirectory or file -p already exists. Error occurred while processing: -p. A subdirectory or file $HOME/n8n_tmp already exists. Error occurred while processing: $HOME/n8n_tmp."
+      },
+      "id": "b93add60-5830-40ec-9d8f-c4ee1578def6",
+      "name": "Chạy FFmpeg",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        180,
+        40
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=107XzulQWaJQ2DhyBWEJLyDDUdwV9uaYF",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "415ac702-a5d1-4aa1-8f1a-3c303427a9ba",
+      "name": "Tải ảnh ",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -520,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -300,
+        40
+      ],
+      "id": "62baed90-ce0e-4f80-a55e-ce648f1b195e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:\\Users\\Administrator\\n8n_tmp\\output.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        420,
+        40
+      ],
+      "id": "14d67663-88e3-4319-92e9-68c84aa2c7c5",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "return [\n  {\n    \"anh1\": items[0].binary.data,\n    \"anh2\": items[1].binary.data,\n    \"anh3\": items[2].binary.data\n  }\n]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        40
+      ],
+      "id": "fc36481b-a37b-4b90-9898-265ac5a69add",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Tải ảnh ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tải ảnh 2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tải ảnh 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tải ảnh 2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Tải ảnh ": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tải ảnh 1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chạy FFmpeg": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Chạy FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b3852a5d-476e-4ba4-a084-08ba5d0ee1d8",
+  "meta": {
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "5kVXUPabtM1UD1bF",
+  "tags": []
+}

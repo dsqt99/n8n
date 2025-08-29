@@ -1,0 +1,5496 @@
+{
+  "name": "tự động đăng bài lên web",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Tạo danh sách từ khóa",
+        "formDescription": "Tạo danh sách các từ khóa cho chủ đề",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Chủ đề",
+              "placeholder": "Chủ đề",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Số lượng từ khóa",
+              "fieldType": "number",
+              "placeholder": "Số lượng từ khóa tạo ra",
+              "requiredField": true
+            },
+            {
+              "fieldType": "hiddenField",
+              "fieldName": "website"
+            }
+          ]
+        },
+        "options": {
+          "path": "keywords"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -5900,
+        940
+      ],
+      "id": "d6cb92cc-305e-407b-bf6d-59229a352983",
+      "name": "On form submission",
+      "webhookId": "06e9b79c-7406-444b-aff7-5ad4b89e3a18"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website').item.json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "== ROW() - 1",
+            "KEYWORD": "={{ $json.keywords }}",
+            "SỐ OUTLINE": "9",
+            "STATUS": "PENDING",
+            "Tone": "natural, humanize"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KEYWORD",
+              "displayName": "KEYWORD",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CATEGORY",
+              "displayName": "CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TITLE",
+              "displayName": "TITLE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dàn bài",
+              "displayName": "Dàn bài",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SỐ OUTLINE",
+              "displayName": "SỐ OUTLINE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Contact_Info",
+              "displayName": "Contact_Info",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ẢNH",
+              "displayName": "ẢNH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "LINK BÀI VIẾT",
+              "displayName": "LINK BÀI VIẾT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -4500,
+        940
+      ],
+      "id": "aa34a715-fd5f-4a15-96bd-e1c53929229e",
+      "name": "Nhập Từ Khóa",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -5280,
+        1160
+      ],
+      "id": "bfb48ac6-d09b-486b-a75c-077f982f2266",
+      "name": "Google Gemini Chat Model3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Promt Tạo Keyword').item.json.Promt_keyword }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -5260,
+        940
+      ],
+      "id": "e8b6cd94-83bc-4dce-b755-1aef43c7bd27",
+      "name": "Tạo Danh sách từ khóa"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "keywords",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        940
+      ],
+      "id": "9c13ce79-b3e3-4d06-bced-9eb2cf6c4fcd",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "998f0bb1-004e-4aa6-bf25-0ae7d3d55062",
+              "name": "Promt_keyword",
+              "value": "=Hãy tạo một danh sách {{ $json['Số lượng từ khóa'] }} các cụm từ khóa dài (long-tail keywords) liên quan đến lĩnh vực/chủ đề: {{ $json['Chủ đề'] }}, cách nhau bằng dấu |, không xuống dòng. Chỉ liệt kê danh sách các cụm từ khóa, không giải thích, không dẫn chứng.\n\nCác cụm từ khóa này nên có từ 3 từ trở lên, thể hiện ý định tìm kiếm cụ thể của người dùng và ít cạnh tranh hơn các từ khóa ngắn. Chúng nên bao gồm:\n\n- Các cụm từ khóa dài tập trung vào nhu cầu mua hoặc tìm kiếm sản phẩm/dịch vụ cụ thể liên quan đến {{ $json['Chủ đề'] }}.\n- Các cụm từ khóa dài hướng đến việc tìm hiểu cách thực hiện một hành động hoặc giải quyết một vấn đề liên quan đến {{ $json['Chủ đề'] }}.\n- Các cụm từ khóa dài chứa thông tin chi tiết, so sánh, đánh giá hoặc các thuộc tính cụ thể của {{ $json['Chủ đề'] }}.\n- Sử dụng các từ để hỏi (như \"làm thế nào\", \"ở đâu\", \"tại sao\", \"cái gì\", \"so sánh\", \"đánh giá\") để tạo ra các cụm từ khóa dài tự nhiên theo cách người dùng tìm kiếm.\n\nSau khi tạo danh sách, hãy ước tính lưu lượng tìm kiếm hàng tháng cho mỗi từ khóa (nếu có thể) hoặc đưa ra đánh giá về mức độ phổ biến tương đối của chúng.\n\nCuối cùng, hãy sắp xếp danh sách các cụm từ khóa dài theo thứ tự giảm dần của lưu lượng tìm kiếm ước tính hoặc mức độ phổ biến, với các từ khóa có lưu lượng tìm kiếm cao nhất hoặc phổ biến nhất ở đầu danh sách.\n\nĐảm bảo danh sách các cụm từ khóa dài đa dạng, không quá trùng lặp và phản ánh nhiều mục đích tìm kiếm chi tiết khác nhau của người dùng đối với lĩnh vực/chủ đề {{ $json['Chủ đề'] }}.",
+              "type": "string"
+            },
+            {
+              "id": "22a9e497-0b0b-4700-8f43-ea49c680138d",
+              "name": "website",
+              "value": "={{ $json.website }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5680,
+        940
+      ],
+      "id": "ec0432fa-c6a0-4240-9ae7-9de2b6bf2b86",
+      "name": "Promt Tạo Keyword"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -3960,
+        1680
+      ],
+      "id": "b1c75360-ae53-4ac9-849c-e098fe49d3cf",
+      "name": "Google Gemini Chat Model2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.PromtTitle }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -3940,
+        1480
+      ],
+      "id": "74435f72-29ce-496d-bb48-4092cb6ac9d4",
+      "name": "Tiêu đề bài viết"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "63e7ff41-5b3f-4750-a3f8-a0f9531c625c",
+              "name": "PromtTitle",
+              "value": "=Hãy tạo một tiêu đề chuẩn SEO cho từ khóa {{ $json.KEYWORD }} . Tiêu đề phải có từ \"{{ $json.KEYWORD }}\", không được thay thế bằng từ khác. Độ dài tối đa 60 ký tự. Chỉ trả về một tiêu đề duy nhất, không có giải thích hay danh sách.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4220,
+        1480
+      ],
+      "id": "a2e5c52b-a220-44a0-9e15-50a661987ca1",
+      "name": "Promt Creat Title"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2640,
+        2140
+      ],
+      "id": "87064202-10c6-4f4c-a93b-e646a372cb5b",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json[\"PROMT-OUTLINE\"] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -2600,
+        1920
+      ],
+      "id": "6c15049d-16d3-490c-940e-44b3eae626be",
+      "name": "TẠO OUTLINE"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f629025e-3411-4b2d-b4d9-166a0136d97e",
+              "name": "PROMT-OUTLINE",
+              "value": "=Bỏ qua hết lời dẫn cùng giải thích đầu cuối, chỉ xuất ra văn bàn thuần túy. KHông tạo tiêu đề ,Không dùng các từ chung như mục lục, hay tiêu đề để đưa vào outline.. Bạn là chuyên gia viết content seo. Nhiệm vụ của bạn là tạo {{ $json[\"SỐ OUTLINE\"] }} outline để viết bài viết chuẩn seo cho từ khóa \"{{ $json.KEYWORD }}\". Hãy đảm bảo từ khóa xuất hiện 1 lần trong từng outline.\n- Bỏ qua toàn bộ phần giới thiệu và giải thích, chỉ duy nhất đưa ra outline bài viết\n- Tuyệt đối Không dùng dấu ** hoặc bất kỳ ký tự đặc biệt nào.\n- Thêm số thứ tự trước các outline để sắp xếp hợp lý",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3900,
+        1920
+      ],
+      "id": "1e916b5e-be6e-44de-bc98-dd582d234598",
+      "name": "Tạo outline với từ khóa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4aaf462d-ba1e-4f40-8509-600b73fd7448",
+              "leftValue": "={{ $json.CONTENT }}",
+              "rightValue": "=\"\"",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4220,
+        2120
+      ],
+      "id": "19bb0761-958a-4179-9401-64b8a6c98e4f",
+      "name": "Nếu có mô tả sản phẩm"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f629025e-3411-4b2d-b4d9-166a0136d97e",
+              "name": "PROMT-OUTLINE",
+              "value": "=Bỏ qua hết lời dẫn cùng giải thích đầu cuối, chỉ xuất ra văn bàn thuần túy. KHông tạo tiêu đề ,Không dùng các từ chung như mục lục, hay tiêu đề để đưa vào outline. Hãy tạo {{ $('SET1').item.json[\"SỐ OUTLINE\"] }} outline để viết bài viết chuẩn seo cho từ khóa \"{{ $('SET1').item.json.KEYWORD }}\" Dựa trên nội dung:\n{{ $json.text }}. \nHãy đảm bảo từ khóa xuất hiện 1 lần trong từng outline.\nChỉ đưa ra {{ $('SET1').item.json[\"SỐ OUTLINE\"] }}  outline được đánh số thứ tự, mỗi outline là một dòng riêng biệt. Tuyệt đối không bao gồm bất kỳ phần giới thiệu, giải thích hoặc ký tự đặc biệt nào.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2860,
+        2140
+      ],
+      "id": "e8469ae7-ecc6-4e50-b36c-59d2b2e1e9ef",
+      "name": "Tạo Outline cho bài viết"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "998f0bb1-004e-4aa6-bf25-0ae7d3d55062",
+              "name": "Content_search",
+              "value": "=\"Hãy tổng hợp thông tin từ 3 kết quả tìm kiếm đầu tiên trên Google cho từ khóa \"{{ $('Nếu có mô tả sản phẩm').first().json.KEYWORD }}\" sau:\n\n{{ $json.combinedLinks }}\n. Dựa trên thông tin tổng hợp, hãy tạo một dàn ý chi tiết cho một bài viết hoàn chỉnh, bao gồm các phần:\n\n1.  **Mở đầu:** Giới thiệu ngắn gọn về chủ đề và mục đích của bài viết.\n2.  **Nội dung chính:**\n    * Phân tích và so sánh các thông tin từ 3 kết quả tìm kiếm, bao gồm:\n        * Các khía cạnh chính được đề cập.\n        * Các điểm tương đồng và khác biệt giữa các nguồn.\n        * Các thông tin quan trọng và hữu ích.\n        * Các ví dụ minh họa (nếu có).\n    * Xác định các thông tin còn thiếu hoặc cần được làm rõ, và đề xuất các phần nội dung bổ sung để hoàn thiện bài viết.\n    * Phân loại thông tin nếu có thể, để bài viết có cấu trúc rõ ràng.\n3.  **Kết luận:** Tóm tắt các điểm chính, đưa ra kết luận hoặc khuyến nghị (nếu có).\"\n4. ** Tuyệt đối Chỉ xuất ra nội dung chính, không dẫn dắt ok đây là hay giải thích gì thêm",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3480,
+        2140
+      ],
+      "id": "fa0e24c7-420d-4d61-939a-6ec90b58069f",
+      "name": "Promt_Research"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/customsearch/v1?q={{ encodeURIComponent($json.KEYWORD) }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cx",
+              "value": "f04c54ea0681b41e9"
+            },
+            {
+              "name": "num",
+              "value": "6"
+            },
+            {
+              "name": "key",
+              "value": "={{ $('Config').first().json.google_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3900,
+        2140
+      ],
+      "id": "9e4faad7-9f4b-466f-a2cf-08708a756dd9",
+      "name": "Search google"
+    },
+    {
+      "parameters": {
+        "jsCode": "const links = $json.items\n  .filter(i => !i.link.includes(\"youtube.com\") && !i.link.includes(\"youtu.be\"))\n  .slice(0, 3)\n  .map(i => i.link)\n  .join('\\n');\n\nreturn [\n  {\n    json: {\n      keyword: $json.keyword || \"Không có từ khóa\",\n      combinedLinks: links\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3680,
+        2140
+      ],
+      "id": "163301c6-40ee-4886-87a9-cb0fffcf96ab",
+      "name": "Get_Link_Top1_3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Content_search }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -3220,
+        2140
+      ],
+      "id": "094afffd-7567-42e0-87d3-9ab3a5fe50a1",
+      "name": "Ref-CONTENT"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -3220,
+        2360
+      ],
+      "id": "727b412b-909c-4408-b76d-c56c3ffc937d",
+      "name": "Google Gemini Chat Model4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2860,
+        1920
+      ],
+      "id": "d0256cf8-a120-48ab-b4e3-521dbe76eba2",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e3f982f8-f5ad-4058-a8eb-fff28e62f106",
+              "name": "ID",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.ID }}",
+              "type": "string"
+            },
+            {
+              "id": "df89eeec-c669-4b2b-8315-224f21d1a436",
+              "name": "KEYWORD",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.KEYWORD }}",
+              "type": "string"
+            },
+            {
+              "id": "a8322e2f-4255-444c-bfb2-2fa85a4cd954",
+              "name": "CONTENT",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.CONTENT }}",
+              "type": "string"
+            },
+            {
+              "id": "65ffe7f0-315d-4de8-ae70-572a9fafe3b5",
+              "name": "SỐ OUTLINE",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json[\"SỐ OUTLINE\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "d9f84312-f557-48f3-868b-2dc75a49c015",
+              "name": "Tone",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.Tone }}",
+              "type": "string"
+            },
+            {
+              "id": "9e9daa22-66b2-4690-9898-5720cb8f3d57",
+              "name": "Contact_Info",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.Contact_Info }}",
+              "type": "string"
+            },
+            {
+              "id": "d2c329f1-86ff-4322-a3c4-e78a252a76dd",
+              "name": "Web_Category",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json.CATEGORY }}",
+              "type": "string"
+            },
+            {
+              "id": "66dcd2df-3ae2-42e2-ac1e-a18e3a234013",
+              "name": "ẢNH",
+              "value": "={{ $('Lấy ra bài viết chưa đăng').item.json['ẢNH'] }}",
+              "type": "string"
+            },
+            {
+              "id": "40b3e2cc-6a29-4ae7-99b3-19583e6f6d59",
+              "name": "website",
+              "value": "={{ $('Find Website1').first().json['Link website'] }}",
+              "type": "string"
+            },
+            {
+              "id": "7784fc01-037b-41f8-b368-ae2b1cced73b",
+              "name": "token",
+              "value": "={{ $('Find Website1').first().json.token }}",
+              "type": "string"
+            },
+            {
+              "id": "45b08fa6-be0b-40f6-b68d-fc0b70a61ad7",
+              "name": "google_api_key",
+              "value": "={{ $('Config').item.json.google_api_key }}",
+              "type": "string"
+            },
+            {
+              "id": "f0e51105-39eb-4ef2-ab63-ab427d835b89",
+              "name": "n8n",
+              "value": "={{ $('Config').item.json.n8n }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4520,
+        1820
+      ],
+      "id": "95d5ee37-2403-4bfc-889d-2e464e424b46",
+      "name": "SET1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "847854b4-47ce-49cc-a117-b0a54d4b1e0a",
+              "name": "outlines",
+              "value": "=Hãy viết một đoạn nội dung chuẩn SEO dài khoảng 500-700 từ bằng tiếng Việt cho tiêu đề H2 sau:\n\n<h2>{{ $json.outlines }}</h2>\n\nĐây là tiêu đề H2 trong bài viết với cấu trúc outline đầy đủ như sau:\n{{ $('Biến outline thành mảng').item.json.outlines }}\n\nTừ khóa chính của bài viết là: {{ $('SET1').last().json.KEYWORD }}\n\nYêu cầu:\n- Phát triển nội dung chi tiết và chuyên sâu cho tiêu đề H2 \"{{ $json.outlines }}\".\n- Tạo cấu trúc nội dung rõ ràng bằng cách sử dụng các heading cấp thấp hơn (H3, H4 nếu cần) và các đoạn văn bản `<p>`.\n- Khai thác các khía cạnh khác nhau, cung cấp thông tin chi tiết, ví dụ, hoặc giải thích để làm rõ ý cho tiêu đề H2.\n- Đảm bảo nội dung bao gồm các ý chính liên quan đến tiêu đề H2 trong outline đầy đủ.\n- Chèn từ khóa chính một cách tự nhiên trong suốt nội dung, bao gồm cả trong các heading cấp thấp hơn (nếu phù hợp).\n- Đảm bảo nội dung không trùng lặp với các phần khác của bài viết (tham khảo outline đầy đủ).\n- Sử dụng giọng văn {{ $('SET1').last().json.Tone }} tự nhiên.\n- Nếu cần lấy thông tin về chủ thể kinh doanh, thương hiệu, và địa chỉ liên hệ hãy lấy nội dung: {{ $('SET1').last().json.Contact_Info }}\n- Kết quả trả về phải là một đoạn mã HTML hoàn chỉnh, bắt đầu bằng thẻ `<h2>` chứa tiêu đề, và tiếp theo là các thẻ `<h3>`, `<h4>` (nếu có) và các đoạn văn `<p>` chứa nội dung chi tiết. **Tuyệt đối không có bất kỳ ký tự hoặc câu giới thiệu nào bên ngoài đoạn mã HTML này.**\n- Không sử dụng dấu markdown ** ở bất cứ đâu\n\nVí dụ về định dạng đầu ra mong muốn:\n<h2>{{ $json.outlines }}</h2>\n<p>Đoạn mở đầu giới thiệu về chủ đề của tiêu đề H2.</p>\n<h3>Tiêu đề H3 thứ nhất: Một khía cạnh của {{ $json.outlines }}</h3>\n<p>Giải thích chi tiết về khía cạnh này.</p>\n<h4>Tiêu đề H4: Một điểm nhỏ hơn</h4>\n<p>Thông tin chi tiết hơn về điểm nhỏ này.</p>\n<h3>Tiêu đề H3 thứ hai: Một khía cạnh khác</h3>\n<p>Giải thích và ví dụ cho khía cạnh này.</p>\n<p>Kết luận hoặc tóm tắt cho phần H2 này.</p>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1060,
+        1700
+      ],
+      "id": "2ee619bd-3673-4a4d-8917-2aa716c4b689",
+      "name": "Set Outlines"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        1920
+      ],
+      "id": "eed86031-67f3-44a0-a56d-4197cbba1fc4",
+      "name": "Google Gemini Chat Model1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.outlines }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -860,
+        1700
+      ],
+      "id": "002e0897-0058-4260-a5b8-7a8b2a63e73f",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "outlines",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1240,
+        1700
+      ],
+      "id": "f6e302fd-6a6d-4664-acef-67bd088634bf",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dbeeb83c-eaf0-4be0-a7fd-a33e69edccfe",
+              "name": "para",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -460,
+        1700
+      ],
+      "id": "e0c06cb6-db33-4ddf-8feb-8e20049ad8e5",
+      "name": "Paragraph"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "209aa07e-3c57-4049-b942-99d7e4acf020",
+              "name": "outlines",
+              "value": "={{ $json['Dàn bài'].split('\\n').map(line => line.trim()).filter(line => line !== ''); }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1460,
+        1700
+      ],
+      "id": "148386a7-446c-4672-b728-891cdaa93ae5",
+      "name": "Biến outline thành mảng"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8dc66fef-6ec7-4682-8b2b-518936f8e725",
+              "name": "google_api_key",
+              "value": "AIzaSyA1j8scyPnIzo4LCq0NLNw2Rl8cugv04Jo",
+              "type": "string"
+            },
+            {
+              "id": "f15ad338-db59-433b-a1f5-4b97bece3471",
+              "name": "n8n",
+              "value": "https://dhsyvvqot.datadex.vn",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5100,
+        1820
+      ],
+      "id": "9d268358-eb5b-4bee-bf4e-f4d49d1930a9",
+      "name": "Config"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2200,
+        1480
+      ],
+      "id": "2be40db5-6408-4ae7-ad32-dd4139603f16",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1920,
+        1700
+      ],
+      "id": "da9f98c3-5623-41c7-945c-d6e4035df566",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').first().json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID",
+              "lookupValue": "={{ $('SET1').item.json.ID }}"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1660,
+        1700
+      ],
+      "id": "37dc98c6-c74c-4db6-8d48-ec0390ca6f08",
+      "name": "Lấy ra bài viết chưa đăng1",
+      "executeOnce": false,
+      "retryOnFail": false,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "63e7ff41-5b3f-4750-a3f8-a0f9531c625c",
+              "name": "PromptMetadata",
+              "value": "=-Tạo thẻ mô tả (meta description) ngắn gọn (dưới 160 ký tự)\n- Tạo 3–5 thẻ tags phù hợp (tags viết không dấu, cách nhau bởi dấu phẩy) cho chủ đề  {{ $('SET1').last().json.KEYWORD }}\n- Chọn một từ khóa chính cho bài viết (từ khóa phải xuất hiện trong tiêu đề  {{ $json.Title_bai_viet }} và đoạn đầu tiên : {{ $json.para }}\nTrả kết quả dưới dạng JSON như sau:\n\n{\n  \"mainKeyword\": \"...\",\n  \"metaDescription\": \"...\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        120,
+        1480
+      ],
+      "id": "c59d8003-ef97-498b-9c51-7f48e3d8281f",
+      "name": "Tạo mô tả + main keywork + tags"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.PromptMetadata }}",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        340,
+        1480
+      ],
+      "id": "04e3d86f-cb1c-415c-8798-dd5e3e5fbfef",
+      "name": "Tạo metadata"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1400,
+        1600
+      ],
+      "id": "fc5a0ffd-f7ef-4274-8d18-1f09f641ae06",
+      "name": "Merge6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12e12263-ff34-478b-b043-4e86156e8262",
+              "name": "para",
+              "value": "={{ $json.para }}",
+              "type": "string"
+            },
+            {
+              "id": "8f2bf780-16c2-4454-a951-3471a953f456",
+              "name": "Title_bai_viet",
+              "value": "={{ $('Lấy ra bài viết chưa đăng1').first().json.TITLE }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        1600
+      ],
+      "id": "fc040648-f3e8-480b-99bf-354c8124ccd7",
+      "name": "Edit Fields",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "\n{\n  \"mainKeyword\": \"string\",\n  \"metaDescription\": \"string\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        520,
+        1640
+      ],
+      "id": "eeee7b3e-f74e-4df6-9589-b02f764ab0e2",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [$input.first().json.output];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        1480
+      ],
+      "id": "c9f8321f-79ac-4bf0-8ea3-c451e46dc739",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        900,
+        2140
+      ],
+      "id": "da1eca1c-1efe-43cb-9235-744ff9eb4e73",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map(item => item.json);\n\n// Hàm chuyển đổi mảng thành HTML và loại bỏ \"```html\"\nfunction arrayToHtml(array) {\n    let html = '';\n\n    array.forEach(item => {\n        let content = item.para || '';\n        // Loại bỏ \"```html\" ở đầu nếu có\n        if (content.startsWith('```html')) {\n            content = content.substring('```html'.length).trimStart();\n        }\n        // Loại bỏ \"```\" ở đầu nếu có (trường hợp chỉ có ```)\n        else if (content.startsWith('```')) {\n            content = content.substring('```'.length).trimStart();\n        }\n\n        // Loại bỏ \"```\" hoặc \"```html\" ở cuối nếu có\n        if (content.endsWith('```html')) {\n            content = content.substring(0, content.length - '```html'.length).trimEnd();\n        } else if (content.endsWith('```')) {\n            content = content.substring(0, content.length - '```'.length).trimEnd();\n        }\n\n        // Thêm đoạn văn bản\n        html += '<div class=\"content-section\">';\n        const paragraphs = content.split('\\n\\n').map(p => `<p>${p}</p>`).join('');\n        html += paragraphs;\n        html += '</div>';\n\n        // Thêm HTML ảnh từ images_para nếu có\n        if (item.images_para) {\n            html += '<div class=\"image-section\">';\n            html += item.images_para; // Không thêm thẻ img mới, giữ nguyên như đã có\n            html += '</div>';\n        }\n    });\n\n    return html;\n}\n\n// Gọi hàm và trả về kết quả\nconst htmlContent = arrayToHtml(items);\n\nreturn [{\n    json: {\n        html_content: htmlContent\n    }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        2140
+      ],
+      "id": "a38ad384-779d-4af6-b129-8fff7b2bc2d6",
+      "name": "Code_content"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5d1f1100-71fe-414a-8bfa-fce5f4aa9d20",
+              "name": "title",
+              "value": "={{ $('Lấy ra bài viết chưa đăng1').first().json.TITLE }}",
+              "type": "string"
+            },
+            {
+              "id": "5cca12d5-4f3c-4df7-9dba-357b71c6d5f2",
+              "name": "content",
+              "value": "={{ JSON.stringify($json.html_content).slice(1, -1) }}",
+              "type": "string"
+            },
+            {
+              "id": "a789da81-26a9-43c3-8622-17fe414ea742",
+              "name": "status",
+              "value": "={{ $('Find Website1').first().json.status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1400,
+        2140
+      ],
+      "id": "5de6dbd0-6283-42dd-9016-62f97c35b132",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "# Tạo keyword, tag..",
+        "height": 540,
+        "width": 1900
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -280,
+        1400
+      ],
+      "typeVersion": 1,
+      "id": "2f9470f7-c54b-4f42-b9cc-4ff4f038a32c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1800,
+        1920
+      ],
+      "id": "31b73ca0-02a1-469a-a56e-180a02a40c79",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        160,
+        2040
+      ],
+      "id": "bd979d0d-b932-46ab-9aaa-89e6439c47b8",
+      "name": "continue - 1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        640,
+        2040
+      ],
+      "id": "556629d1-670c-4ac2-b811-756bd593eef3",
+      "name": "continue - 2"
+    },
+    {
+      "parameters": {
+        "content": "# Viết bài và ghép hình ảnh",
+        "height": 520,
+        "width": 1900,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -280,
+        1980
+      ],
+      "typeVersion": 1,
+      "id": "80b5947f-2e31-4028-9222-be282e046696",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        2220
+      ],
+      "id": "daf904a0-90bc-46fa-b147-fa9ef7b0edcb",
+      "name": "Viết bài"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo nội dung theo dàn bài",
+        "height": 1100,
+        "width": 1740,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2040,
+        1400
+      ],
+      "typeVersion": 1,
+      "id": "07821a20-dcb2-44da-9dd7-ce37c55ff7ff",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Viết dàn bài",
+        "height": 660,
+        "width": 2220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4280,
+        1840
+      ],
+      "typeVersion": 1,
+      "id": "087f5232-2546-486e-8b29-f24fa637dd5d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo tiêu đề bài viết",
+        "height": 420,
+        "width": 2220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4280,
+        1400
+      ],
+      "typeVersion": 1,
+      "id": "e4ae9af8-7c34-41dd-9e40-82715f767134",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo danh sách từ khóa",
+        "height": 500,
+        "width": 1620,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5940,
+        860
+      ],
+      "typeVersion": 1,
+      "id": "c6767c9a-4f89-47a6-97a8-76e12a756c12",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e9245cc1-a088-43a3-8f60-368514eb103f",
+              "name": "link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2200,
+        1940
+      ],
+      "id": "62c9b851-4b4e-48d1-9ba6-9766c90cd1b0",
+      "name": "Link bài viết"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('SET1').first().json.website }}/wp-json/wp/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic {{ $('SET1').first().json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $json.list_tags.toJsonString() }},\n  \"title\": \"{{ $json.title }}\",\n  \"content\": \"{{ $json.content }}\",\n  \"status\": \"{{ $json.status }}\",\n  {{ $json.image_id ? `\"featured_media\":${$json.image_id},` : \"\" }}\n  {{ $json.categoryId ? `\"categories\": [${$json.categoryId}],` : \"\" }}\n  \"meta\": {\n    \"_yoast_wpseo_focuskw\": \"{{ $json.mainKeyword }}\",\n    \"_yoast_wpseo_metadesc\": \"{{ $json.metaDescription }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2020,
+        1940
+      ],
+      "id": "561aebeb-c1bc-486b-b107-da2df83ead39",
+      "name": "Post blog to Wordpress"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $('Code1').all()) {\n  item.json.list_tags = $input.first().json.data.map(x => x.id);\n}\n\nreturn $('Code1').all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        1480
+      ],
+      "id": "305aa9f4-0702-4d5c-84c1-cf2253cfdc42",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8facca7d-4391-471f-bfcb-5cde5e193f4c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -4060,
+        800
+      ],
+      "id": "6f12ee91-65da-4fde-88b5-7fc2190aeb86",
+      "name": "Webhook",
+      "webhookId": "8facca7d-4391-471f-bfcb-5cde5e193f4c"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"data\": {{ $input.all().map(x => x.json).toJsonString() }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -3100,
+        620
+      ],
+      "id": "69cfed2f-e145-4f2e-9c28-cc38c710c5f7",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -3620,
+        800
+      ],
+      "id": "edb137e9-1633-4a12-a0f5-e9dad2579013",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "content": "## Create Or Update Tag trên wp",
+        "height": 980,
+        "width": 2220,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4280,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "4df8f634-ed1f-4eb1-a11d-775e4f534423",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('SET1').item.json.n8n }}/webhook/8facca7d-4391-471f-bfcb-5cde5e193f4c",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"tags\": {{ $json.tags.toJsonString() }},\n\"website\": \"{{ $('SET1').first().json.website }}\",\n\"token\": \"{{ $('SET1').first().json.token }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        1480
+      ],
+      "id": "76f09a6e-46bf-43df-a9f9-334c4b532da4",
+      "name": "CreateOrUpdateTags"
+    },
+    {
+      "parameters": {
+        "formTitle": "Update List Category",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1820,
+        980
+      ],
+      "id": "338823ad-a171-4d25-90a5-bb99c9a575c7",
+      "name": "On form submission2",
+      "webhookId": "eb513f26-5b56-41ef-9e3d-f2f3798cf924"
+    },
+    {
+      "parameters": {
+        "content": "## Cập nhật danh sách category lên sheet - 2",
+        "height": 500,
+        "width": 1740,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2040,
+        860
+      ],
+      "typeVersion": 1,
+      "id": "4f114e0e-5813-40c0-b26a-f689c782ecb3",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "788f4cce-c891-4844-90ca-c9f961781d9a",
+              "name": "categoryId",
+              "value": "={{ $json.CATEGORY_ID }}",
+              "type": "string"
+            },
+            {
+              "id": "a9610f0b-962a-4ec4-9d03-2e3a7a8989ad",
+              "name": "categoryName",
+              "value": "={{ $json.CATEGORY }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        1800
+      ],
+      "id": "0e72144d-1f2f-4f49-a10e-3abcb034118e",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1dae467-f95c-4973-91e9-d02e7ea6531c",
+              "name": "keywords",
+              "value": "={{ $json.text.split(\"|\").map(keyword => keyword.trim()) }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4920,
+        940
+      ],
+      "id": "f1f4cd40-00a8-4a9c-b631-8f5442b9492e",
+      "name": "Split Keywords"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c255988-555c-44a4-853a-abe89ffb3e04",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3100,
+        820
+      ],
+      "id": "0d1186ab-e180-49ee-9156-22d6eca940ab",
+      "name": "IfExistsTag"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        800
+      ],
+      "id": "f2784b61-5689-436d-bd1b-c7039e534fef",
+      "name": "Next"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -2520,
+        700
+      ],
+      "id": "6ad58305-da05-4c21-92d8-132122cfaba6",
+      "name": "Limit First Tag"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": " body.tags",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -3840,
+        800
+      ],
+      "id": "70837229-25bc-429f-ad25-3e45007172ca",
+      "name": "List Tags"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1140,
+        980
+      ],
+      "id": "4c00a2b5-5b1d-4459-818d-e03171270232",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Link website'] }}/wp-json/wp/v2/categories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -800,
+        980
+      ],
+      "id": "4846f8f4-d63a-491d-b347-eb13b3f16e83",
+      "name": "Get All Categories of Wordpress"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Loop Over Items2').item.json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Category",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "CATEGORY_ID": "={{ $json.id }}",
+            "CATEGORY": "={{ $json.name }}"
+          },
+          "matchingColumns": [
+            "CATEGORY_ID"
+          ],
+          "schema": [
+            {
+              "id": "CATEGORY",
+              "displayName": "CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CATEGORY_ID",
+              "displayName": "CATEGORY_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -480,
+        980
+      ],
+      "id": "c0bce061-0b12-4adb-ac1d-f3759866b33f",
+      "name": "Update Category To Sheet"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1440,
+        980
+      ],
+      "id": "44db3218-a477-4271-af2e-0729c7787c3e",
+      "name": "List Website"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Link website",
+              "lookupValue": "={{ $json.website }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -5480,
+        940
+      ],
+      "id": "7276a0e4-8236-41b3-99f0-2d8c16c43591",
+      "name": "Find Website"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "images",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        640,
+        2220
+      ],
+      "id": "fe4f0b49-c6e7-4130-82af-6a911ced7215",
+      "name": "List Image For Post",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "image_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        2380
+      ],
+      "id": "2190b27b-a7f5-4c6b-8e1c-50d4b4f03b1a",
+      "name": "Id Image Featured",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        640,
+        2380
+      ],
+      "id": "5e0908a1-a05d-42b9-bff1-00ab9c9d342d",
+      "name": "No Operation, do nothing6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('SET1').first().json.n8n }}/webhook/ac79fd3f-53f2-41b5-8093-612b4c623cc6",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"set1\": {{ $('SET1').first().json.toJsonString() }},\n  \"para\": {{ $input.all().map(x => x.json).toJsonString() }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        340,
+        2220
+      ],
+      "id": "f35b1054-d9cc-4a76-bb15-3d0d72c6a908",
+      "name": "Tìm và upload ảnh lên wp",
+      "executeOnce": true,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0257b20e-b05a-45dd-950e-32e53b9fe8d9",
+              "name": "KEYWORD",
+              "value": "={{ $json.KEYWORD }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        600
+      ],
+      "id": "223eef00-6701-4207-bd00-0b98d2ec8b23",
+      "name": "Key-search"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "998f0bb1-004e-4aa6-bf25-0ae7d3d55062",
+              "name": "Content_search",
+              "value": "=Hãy phiên dịch ra tiếng anh cho từ khóa sau đây để dùng trong google search hình ảnh, giúp tìm ra các hình ảnh liên quan mật thiết với từ khóa:  {{ $json.KEYWORD }}. không cung cấp keyword có thể dẫn tới việc tìm ra các hình ảnh không liên quan tới từ khóa. Tuyệt đối Chỉ xuất ra nội dung chính, không dẫn dắt ok đây là hay giải thích gì thêm",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        340,
+        600
+      ],
+      "id": "b6be2d46-09ca-493f-9b89-4d1df4276bdb",
+      "name": "Promt_Research1"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/customsearch/v1?searchType=image&imgSize=large&imgType=photo&fileType=jpg&safe=active&q={{ encodeURIComponent($json.keyword) }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cx",
+              "value": "f04c54ea0681b41e9"
+            },
+            {
+              "name": "num",
+              "value": "=10"
+            },
+            {
+              "name": "start",
+              "value": "={{ $json.start }}"
+            },
+            {
+              "name": "key",
+              "value": "={{ $('SET').first().json.google_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        1000
+      ],
+      "id": "792ce70b-0039-4012-a7a9-ed68010a4c10",
+      "name": "Search google1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const count = $('paragraphs').all().length; // ví dụ: 35\nconst num = 10;\nconst result = [];\n\nconst totalPages = Math.ceil(count / num); // làm tròn lên để đủ lượt\n\nfor (let i = 0; i < totalPages; i++) {\n  result.push({\n    json: {\n      page: i+1,\n      start: i * num + 1, // Google API start từ 1\n      keyword: $json[\"text\"] // nếu bạn có từ khóa truyền theo\n    }\n  });\n}\n\nreturn result;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        600
+      ],
+      "id": "0d0e57db-119e-4104-8d3e-c2e268cd6c3c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Get_Link_image1').item.json.images_para }}",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1220,
+        1000
+      ],
+      "id": "e4b6f214-a0ce-4636-a1ca-09e405f61130",
+      "name": "conver-binary"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dd55ca48-c63c-4e1e-8af3-46bbc8417162",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "99a693ef-54e0-413a-8299-5d32c2af586d",
+              "leftValue": "={{ $json.headers['content-type'] }}",
+              "rightValue": "=text/html",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1000,
+        1000
+      ],
+      "id": "bdc7ad9f-0e7c-4968-96a8-b26947655c9f",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "method": "HEAD",
+        "url": "={{ $json.images_para }}",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        1000
+      ],
+      "id": "b41f175f-8ac1-47b1-9a3f-d57ca2110d08",
+      "name": "CHECK-LINK-IMAGE",
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- Config ---\nconst count = $('paragraphs').all().length; // Giới hạn số ảnh đầu ra\n\nconst allItems = $input.all();\nlet output = [];\nlet counter = 1;\nconst timestamp = new Date().toISOString().replace(/[:.]/g, \"-\");\n\nconst isImageLink = (url) => {\n  return /\\.(jpg|jpeg|png|webp|gif)(\\?.*)?$/i.test(url);\n};\n\nconst getFileName = (url) => {\n  try {\n    return url.split('/').pop().split('?')[0]; // bỏ query\n  } catch (e) {\n    return '';\n  }\n};\n\nconst seenFilenames = new Set(); // Để tránh ảnh trùng tên (URL giống nhau)\n\nfor (const item of allItems) {\n  const results = item.json.items;\n\n  if (results && Array.isArray(results)) {\n    for (const img of results) {\n      if (output.length >= count) break; // Ngừng nếu đã đủ ảnh\n\n      const url = img.link;\n      if (!isImageLink(url)) continue;\n\n      const filenameRaw = getFileName(url);\n      if (seenFilenames.has(filenameRaw)) continue; // Bỏ nếu đã thấy ảnh trùng tên\n\n      seenFilenames.add(filenameRaw);\n\n      const ext = filenameRaw.split('.').pop().split('?')[0].toLowerCase();\n      const contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;\n\n      const filename = `image-${timestamp}-${counter}.${ext}`;\n\n      output.push({\n        json: {\n          images_para: url,\n          filename: filename,\n          contentType: contentType\n        }\n      });\n      counter++;\n    }\n  }\n\n  if (output.length >= count) break; // Ngừng duyệt input nếu đã đủ ảnh\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        1000
+      ],
+      "id": "95c04f9d-3061-451a-add2-543ecc3cf6b1",
+      "name": "Get_Link_image1",
+      "executeOnce": false,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "content": "# Tìm ảnh trên google",
+        "height": 840,
+        "width": 1580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "2a3f09ae-7178-418e-b84a-552ec6d9847c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dd18a65c-539f-4c1c-bfcf-a8bfbc0759ca",
+              "leftValue": "={{ $('SET').first().json['ẢNH'] }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        420
+      ],
+      "id": "374a5148-0022-445e-851c-a2869654c027",
+      "name": "If",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "## Lấy ảnh trong thử mục drive",
+        "height": 280,
+        "width": 1580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        180
+      ],
+      "typeVersion": 1,
+      "id": "1aa4dc2f-5d86-405d-9dda-a3956b5a280a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5af3784d-d775-4991-8428-b89db3a17787",
+              "leftValue": "={{ $json.filename }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        1000
+      ],
+      "id": "448517ed-1723-43d9-8e49-1cf203601e40",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('Webhook1').first().json.body.para;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        -40
+      ],
+      "id": "a77f85b3-4a2d-40b6-9718-cc2ef43e2fd6",
+      "name": "paragraphs"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"images\": [],\n  \"image_id\": []\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        740,
+        1200
+      ],
+      "id": "04ffc58f-32d5-4c80-b459-a3fbbe044a9d",
+      "name": "Respond Empty"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "=",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $json[\"ẢNH\"] }}",
+            "mode": "url"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        100,
+        260
+      ],
+      "id": "424e9de0-fffe-42e9-9290-808337383adb",
+      "name": "Get List Image In Folder",
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1400,
+        240
+      ],
+      "id": "a731528e-266c-494f-aa45-4e0e149fcc9e",
+      "name": "Download Image"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ac79fd3f-53f2-41b5-8093-612b4c623cc6",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -40
+      ],
+      "id": "17bb99dd-dca5-468d-bc98-b5fce9e44408",
+      "name": "Webhook1",
+      "webhookId": "ac79fd3f-53f2-41b5-8093-612b4c623cc6"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $('Webhook1').first().json.body.set1"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        -40
+      ],
+      "id": "3a0a9669-25b1-45d7-9026-82f3283640fe",
+      "name": "SET",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "## Lấy ảnh từ drive hoặc là tìm ảnh từ google",
+        "height": 1460,
+        "width": 2920,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -280,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "5c4bdebf-3194-42f8-b761-6ee040a4ce13",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1800,
+        580
+      ],
+      "id": "a88b2450-fc05-4862-88df-a62a174a1460",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const username = $input.first().json.username;\nconst password = ($input.first().json.password + '').replaceAll(' ','');\nconst credentials = `${username}:${password}`;\n\nconst base64Encoded = Buffer.from(credentials).toString('base64');\n\nreturn [{base64Encoded}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -820,
+        580
+      ],
+      "id": "241cec70-e0ca-4afb-b564-efa0d33c1235",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1140,
+        580
+      ],
+      "id": "2a126a88-8eb2-4f3b-91c7-d5ecf360f7a7",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link website": "={{ $('List Website1').item.json['Link website'] }}",
+            "token": "={{ $json.base64Encoded }}"
+          },
+          "matchingColumns": [
+            "Link website"
+          ],
+          "schema": [
+            {
+              "id": "Tên website",
+              "displayName": "Tên website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link website",
+              "displayName": "Link website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link sheet",
+              "displayName": "Link sheet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "password",
+              "displayName": "password",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token",
+              "displayName": "token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -480,
+        580
+      ],
+      "id": "55c78eab-3157-4dca-875a-1af226bdcd40",
+      "name": "Update row in sheet4"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo token login wp - 1",
+        "height": 440,
+        "width": 1740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2040,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "b776591c-16b3-49df-ba1b-aded6b319fc7",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook1').first().json.body.set1.website }}/wp-json/wp/v2/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "=attachment;filename=\"{{ encodeURIComponent($binary.data.fileName) }}\""
+            },
+            {
+              "name": "Authorization",
+              "value": "=Basic {{ $('Webhook1').first().json.body.set1.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        640
+      ],
+      "id": "0b5bdd19-933f-458d-acb8-3cd7b442ddc1",
+      "name": "Upload To Wordpress",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').item.json['Link sheet'] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "STATUS",
+              "lookupValue": "PENDING"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -4920,
+        1820
+      ],
+      "id": "2204285b-95dd-41ce-aa64-5a28e79e5f2a",
+      "name": "Lấy ra bài viết chưa đăng",
+      "executeOnce": true,
+      "retryOnFail": false,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').item.json['Link sheet'] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "STATUS": "QUEUE"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KEYWORD",
+              "displayName": "KEYWORD",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SCHEDULE",
+              "displayName": "SCHEDULE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINK BÀI VIẾT",
+              "displayName": "LINK BÀI VIẾT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SỐ OUTLINE",
+              "displayName": "SỐ OUTLINE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contact",
+              "displayName": "contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -4720,
+        1820
+      ],
+      "id": "83012b2a-df87-413a-a3e4-0e519c4cd6f5",
+      "name": "Update row in sheet1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body.website }}/wp-json/wp/v2/tags",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "search",
+              "value": "={{ $json[\"body.tags\"] }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic {{ $('Webhook').first().json.body.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3360,
+        820
+      ],
+      "id": "384e033d-8443-499e-afd5-7be8a8bc3679",
+      "name": "Find Tag",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').first().json.body.website }}/wp-json/wp/v2/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic {{ $('Webhook').first().json.body.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $('Loop Over Items1').item.json[\"body.tags\"] }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2520,
+        880
+      ],
+      "id": "187a352b-6067-417a-85c2-7d1daa1bc3aa",
+      "name": "Create Tag",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1440,
+        580
+      ],
+      "id": "1d613a44-1382-4b5f-87a2-397cdd68e6bc",
+      "name": "List Website1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Link website",
+              "lookupValue": "={{ $json.website }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -5300,
+        1820
+      ],
+      "id": "3c6cd718-e343-48bd-9c58-90eef27a3dfb",
+      "name": "Find Website1"
+    },
+    {
+      "parameters": {
+        "path": "a94ad5ce-38f9-49c2-8b84-e443f80e172a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -5680,
+        1820
+      ],
+      "id": "b2a8b625-40a4-47a4-b0c5-2723c644a012",
+      "name": "Webhook3",
+      "webhookId": "a94ad5ce-38f9-49c2-8b84-e443f80e172a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "214116f8-f702-46e5-8a80-9783c894e5dd",
+              "name": "website",
+              "value": "={{ $json.query.website }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5500,
+        1820
+      ],
+      "id": "7693b171-f6a2-4a50-9609-e8be08a8e14f",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -5720,
+        500
+      ],
+      "id": "34deebc7-b8a9-4835-a05f-46e5a446b2f0",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/webhook/a94ad5ce-38f9-49c2-8b84-e443f80e172a",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "website",
+              "value": "={{ $json['Link website'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4840,
+        500
+      ],
+      "id": "3063418f-8d8b-4863-a1a6-b351a4f2a567",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -5120,
+        500
+      ],
+      "id": "f8c24e07-016c-44a5-9ec7-2a5b932c37d5",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -4620,
+        500
+      ],
+      "id": "d0409c22-8f7e-4f7e-b47a-7417e1b69060",
+      "name": "Wait1",
+      "webhookId": "306a6cfb-a950-442a-b100-b02afc6d43f7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').first().json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('SET1').first().json.ID }}",
+            "STATUS": "DONE",
+            "LINK BÀI VIẾT": "={{ $json.link }}",
+            "CONTENT": "={{ $('Merge3').item.json.content }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KEYWORD",
+              "displayName": "KEYWORD",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CATEGORY",
+              "displayName": "CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TITLE",
+              "displayName": "TITLE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dàn bài",
+              "displayName": "Dàn bài",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SỐ OUTLINE",
+              "displayName": "SỐ OUTLINE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contact_Info",
+              "displayName": "Contact_Info",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ẢNH",
+              "displayName": "ẢNH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "LINK BÀI VIẾT",
+              "displayName": "LINK BÀI VIẾT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2440,
+        1940
+      ],
+      "id": "67b1f5ef-39ec-44b7-ac00-cc396acb417b",
+      "name": "Update Link Post"
+    },
+    {
+      "parameters": {
+        "content": "## Hẹn giờ đăng",
+        "height": 440,
+        "width": 1620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5940,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "5a319c14-1673-4c78-a494-3b6eb5ebdcbf",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## Cài đặt và lấy ra bài viết chờ đăng",
+        "height": 1100,
+        "width": 1620,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5940,
+        1400
+      ],
+      "typeVersion": 1,
+      "id": "4046d850-9cd8-4513-b412-3a3856a69d80",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "## Đăng bài lên wordpress",
+        "height": 1100,
+        "width": 1000,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1640,
+        1400
+      ],
+      "typeVersion": 1,
+      "id": "42f7dbb5-2df1-4d9c-8992-1313891a107c",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Content_search }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        720,
+        600
+      ],
+      "id": "b34cd9a9-e840-4ac6-bdee-4ede2100065b",
+      "name": "Tạo text search image"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        640
+      ],
+      "id": "f7a22378-0282-462e-a575-97098db538d4",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1700,
+        620
+      ],
+      "id": "39975378-c905-4add-a7e7-d5e6952b07de",
+      "name": "Loop Over Items4"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2200,
+        640
+      ],
+      "id": "986940f4-65b7-4967-a18c-1f3c6ed6fba8",
+      "name": "Wait",
+      "webhookId": "a21a58bc-ecbc-45aa-a73d-1383031e9a70"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Ảnh lên wp",
+        "height": 280,
+        "width": 980
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1640,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "f08049b1-6e45-44ec-a8f2-c2737ad78bd7",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"images\": {{ $input.all().map(x => x.json).toJsonString() }},\n  \"image_id\": [{\n    \"image_id\": {{ $('If2').first().json.id }}\n  }]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2440,
+        120
+      ],
+      "id": "17ea19f5-f2de-42ef-9790-a9ad2c6ed534",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fbb326c3-be67-4939-9301-4ef6ba43afad",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1700,
+        260
+      ],
+      "id": "30bb4fa6-3dfe-4008-a9b7-3118099f00dc",
+      "name": "If2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "30068292-6224-4724-bbf4-baacfc9b4d1c",
+              "name": "images_para",
+              "value": "=<img src=\"{{ $json.guid.rendered }}\" alt=\"\" title=\"\">",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2200,
+        120
+      ],
+      "id": "1b115de3-6c1f-4a4a-877e-958de797b55d",
+      "name": "Get Images for Post"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2840,
+        880
+      ],
+      "id": "f90ce0bf-cf82-4d79-b943-4b86f22f4b23",
+      "name": "Wait2",
+      "webhookId": "ff3cef5d-1712-4eec-a2d8-e6e42a3df5c5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2840,
+        700
+      ],
+      "id": "f96c18d6-6e4d-4656-924f-b1c6ff98fae9",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f5c9452c-0706-48ef-b123-2328786713e3",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3360,
+        620
+      ],
+      "id": "772fad32-e447-4d32-aaf5-ad8655a9fa4a",
+      "name": "If4",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cd29888a-d00a-4506-9221-ef6ded4775ba",
+              "leftValue": "={{ $binary.data.fileSize }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        1000
+      ],
+      "id": "c5a3e514-f2ba-4199-b999-7ffb4928e9a4",
+      "name": "If5",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "581cc632-9de3-4bd8-8818-abed08a1ffc1",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        140
+      ],
+      "id": "1773a9f8-45f3-426c-bd3d-cb982c244db3",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"images\": [],\n  \"image_id\": []\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2200,
+        340
+      ],
+      "id": "4eb16981-2fd1-46af-99b1-9ca2ef2379ea",
+      "name": "Respond Empty1"
+    },
+    {
+      "parameters": {
+        "maxItems": "={{ $('SET').first().json['SỐ OUTLINE'] }}"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        340,
+        260
+      ],
+      "id": "32114300-b43d-4dda-bfa7-852d8a4f8036",
+      "name": "Limit",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1934ac17-ec7a-494d-8863-e21fe87986bc",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        260
+      ],
+      "id": "e30bc39d-c1f4-4c0d-bfe6-c6e18c4e819a",
+      "name": "If7",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "84cc8ad8-2e4e-4048-b925-8473f3ceee54",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        260
+      ],
+      "id": "2c1d5c09-b3c6-472a-a8b8-9685d277d705",
+      "name": "If8"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Tạo từ khóa thành công",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        -4500,
+        1200
+      ],
+      "id": "0af2f54f-b62a-4553-abd9-556466fb3e6c",
+      "name": "Form",
+      "webhookId": "75368a74-24fa-4988-960b-ff95b8fc7dd4"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n   {\n\t\t\"fieldLabel\": \"website\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $input.all().map(item => {\n              return {\n                  \"option\": item.json[\"Link website\"]\n              }\n            }).toJsonString() }}\n\t\t},\n\t\t\"requiredField\": true\n\t}\n]",
+        "options": {
+          "formTitle": "Chọn website",
+          "buttonLabel": "Submit"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        -5500,
+        2120
+      ],
+      "id": "ccb6d25c-c612-4f2f-8c8b-7808c006eff0",
+      "name": "Form1",
+      "webhookId": "be6a355a-48bb-46d2-8d88-b3b81ac86da8"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -5680,
+        2120
+      ],
+      "id": "78e20103-6fbe-4165-9d77-4a600ac4f886",
+      "name": "Find Website2"
+    },
+    {
+      "parameters": {
+        "formTitle": "Tự động viết bài chuẩn seo và đăng bài",
+        "options": {
+          "buttonLabel": "Bắt đầu",
+          "path": "dang-bai"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -5860,
+        2120
+      ],
+      "id": "15617db2-bd1c-49c9-b98d-b58e9842c91d",
+      "name": "On form submission1",
+      "webhookId": "7a4baa1b-8575-4a97-9b86-0b7b2323bd6f"
+    },
+    {
+      "parameters": {
+        "content": "## Click Run Test",
+        "height": 300,
+        "width": 580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6540,
+        1060
+      ],
+      "typeVersion": 1,
+      "id": "206eb43b-c337-4cf3-9ce9-a4142745e095",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Click Run Test",
+        "height": 260,
+        "width": 580,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5940,
+        2040
+      ],
+      "typeVersion": 1,
+      "id": "ec4d676a-844e-4342-af55-67233dbf97b3",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n   {\n\t\t\"fieldLabel\": \"website\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $input.all().map(item => {\n              return {\n                  \"option\": item.json[\"Link website\"]\n              }\n            }).toJsonString() }}\n\t\t},\n\t\t\"requiredField\": true\n\t}\n]",
+        "options": {
+          "formTitle": "Chọn website",
+          "buttonLabel": "Submit"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        -6100,
+        1140
+      ],
+      "id": "e9b3a2a6-3355-41b1-b5a8-7894f76d6fb9",
+      "name": "Form2",
+      "webhookId": "be6a355a-48bb-46d2-8d88-b3b81ac86da8"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -6300,
+        1140
+      ],
+      "id": "8bebc27d-5ffe-46aa-879f-87529e2b6b69",
+      "name": "Find Website4"
+    },
+    {
+      "parameters": {
+        "formTitle": "Tạo danh sách từ khóa",
+        "options": {
+          "buttonLabel": "Bắt đầu",
+          "path": "b4b4788f-8236-483b-ba96-e6f9d7630a84"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -6500,
+        1140
+      ],
+      "id": "bac2dc0d-b042-42ae-848f-db0186504b6f",
+      "name": "On form submission4",
+      "webhookId": "b4b4788f-8236-483b-ba96-e6f9d7630a84"
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Chủ đề",
+              "placeholder": "Chủ đề",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Số lượng từ khóa",
+              "fieldType": "number",
+              "placeholder": "Số lượng từ khóa tạo ra",
+              "requiredField": true
+            },
+            {
+              "fieldType": "hiddenField",
+              "fieldName": "website",
+              "fieldValue": "={{ $json.website }}"
+            }
+          ]
+        },
+        "options": {
+          "formTitle": "Tạo danh sách từ khóa",
+          "formDescription": "Tạo danh sách các từ khóa cho chủ đề"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        -5900,
+        1140
+      ],
+      "id": "05e37fea-8963-4f3f-8a9f-66badb0368a5",
+      "name": "Form3",
+      "webhookId": "d186e7d6-fdf1-4864-81cc-8f53be14bf9f"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        300,
+        1660
+      ],
+      "id": "889ffe71-7fd1-4fc8-be37-3a47702a9fc8",
+      "name": "Google Gemini Chat Model6"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TZ93nBDzO13e5WVNDPKNb-zgdPcqL0ubwGG1alAZ8lk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Page",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -5460,
+        500
+      ],
+      "id": "b1587555-06e4-45b4-a5d4-28df41d5101a",
+      "name": "Get row(s) in sheet"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').first().json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 855052452,
+          "mode": "list",
+          "cachedResultName": "Page",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10cJK1flokHtQJAKDuwX2ddNk95k_BAhGwKZqux5ofc8/edit#gid=855052452"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "CATEGORY",
+              "lookupValue": "={{ $('SET1').first().json.Web_Category }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        120,
+        1800
+      ],
+      "id": "d1e324b2-8406-4468-b3c7-34f0be7117a2",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').first().json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('SET1').item.json.ID }}",
+            "Dàn bài": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KEYWORD",
+              "displayName": "KEYWORD",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CATEGORY",
+              "displayName": "CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TITLE",
+              "displayName": "TITLE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dàn bài",
+              "displayName": "Dàn bài",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SỐ OUTLINE",
+              "displayName": "SỐ OUTLINE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contact_Info",
+              "displayName": "Contact_Info",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ẢNH",
+              "displayName": "ẢNH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINK BÀI VIẾT",
+              "displayName": "LINK BÀI VIẾT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -2200,
+        1920
+      ],
+      "id": "b67de91c-01cd-4021-8b7e-6a28829ee16d",
+      "name": "Update row in sheet"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Find Website1').first().json[\"Link sheet\"] }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "content",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('SET1').item.json.ID }}",
+            "TITLE": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KEYWORD",
+              "displayName": "KEYWORD",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CATEGORY",
+              "displayName": "CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TITLE",
+              "displayName": "TITLE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SỐ OUTLINE",
+              "displayName": "SỐ OUTLINE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contact_Info",
+              "displayName": "Contact_Info",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ẢNH",
+              "displayName": "ẢNH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINK BÀI VIẾT",
+              "displayName": "LINK BÀI VIẾT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -3580,
+        1480
+      ],
+      "id": "d4f0f03e-d708-48f8-9506-96f373709585",
+      "name": "Update row in sheet2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        720,
+        800
+      ],
+      "id": "fae8d0c6-2939-4f8b-9873-eddddc1ae75f",
+      "name": "Google Gemini Chat Model5"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "content-type": "application/json",
+            "user-agent": "axios/1.8.3",
+            "content-length": "162",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "localhost:5678",
+            "connection": "close"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "tags": [
+              "mua chanh tuoi",
+              "chanh tuoi ha noi",
+              "chanh tuoi online",
+              "gia re chanht uoi",
+              "mua cham tuoi gia re"
+            ],
+            "website": "https://vippro.appcuatoi.com",
+            "token": ""
+          },
+          "webhookUrl": "https://dxunek.datadex.vn/webhook/8facca7d-4391-471f-bfcb-5cde5e193f4c",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "dxunek.datadex.vn",
+            "user-agent": "axios/1.8.3",
+            "content-length": "14358",
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "194.233.95.119",
+            "cf-ipcountry": "SG",
+            "cf-ray": "969728e51e450299-CDG",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.71.130.200",
+            "x-forwarded-host": "dxunek.datadex.vn",
+            "x-forwarded-port": "80",
+            "x-forwarded-proto": "http",
+            "x-forwarded-server": "8e8d85432e18",
+            "x-real-ip": "172.71.130.200"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "set1": {
+              "ID": "1",
+              "KEYWORD": "Khóa học lập trình AI Python cho người mới bắt đầu online (Lưu lượng ước tính: Cao nhất)",
+              "CONTENT": "",
+              "SỐ OUTLINE": "4",
+              "Tone": "natural, humanize",
+              "Contact_Info": "",
+              "Web_Category": "Chưa phân loại",
+              "ẢNH": "",
+              "website": "https://vippro.appcuatoi.com",
+              "token": "bmd1eWVuOnpiMndyYXNnUGd6cmFpdGRSaDcwZ1YwTQ==",
+              "google_api_key": "AIzaSyDaZCUfsxvKYdqCaMmzG0EC8ZS_7K7RwR4",
+              "n8n": "https://dxunek.datadex.vn"
+            },
+            "para": [
+              {
+                "para": "```html\n<h2>1. Tổng quan về khóa học lập trình AI Python cho người mới bắt đầu online và lợi ích khi học từ xa</h2>\n<p>Trong thời đại công nghệ phát triển nhanh chóng, nhu cầu học lập trình, đặc biệt là lập trình AI, ngày càng trở nên phổ biến. Khóa học lập trình AI Python cho người mới bắt đầu online là một giải pháp tuyệt vời cho những ai muốn theo đuổi lĩnh vực này mà không cần phải bỏ ra quá nhiều thời gian và chi phí cho việc di chuyển. Bài viết này sẽ giúp bạn có cái nhìn tổng quan về khóa học này và lý do vì sao học từ xa là một lựa chọn sáng suốt.</p>\n\n<h3>Giới thiệu về khóa học lập trình AI Python</h3>\n<p>Khóa học lập trình AI Python cho người mới bắt đầu online được thiết kế để đáp ứng nhu cầu học tập linh hoạt của các học viên. Với nội dung chi tiết và phong phú, khóa học này cung cấp những kiến thức cơ bản cũng như các kỹ năng cần thiết để bạn tự tin bước vào thế giới lập trình AI. Python là ngôn ngữ lập trình phổ biến được nhiều doanh nghiệp và tổ chức sử dụng, do đó, việc thành thạo Python mở ra cơ hội lớn trong ngành công nghệ thông tin.</p>\n\n<h4>Đối tượng tham gia khóa học</h4>\n<p>Khóa học này phù hợp với những người chưa có kiến thức nền tảng về lập trình hoặc AI, nhưng có mong muốn tìm kiếm một khởi đầu vững chắc trong ngành công nghệ. Ngoài ra, những người đã có kinh nghiệm trong các ngôn ngữ lập trình khác cũng sẽ tìm thấy giá trị trong việc làm quen với Python để mở rộng kỹ năng của mình.</p>\n\n<h3>Lợi ích của việc học từ xa</h3>\n<p>Học từ xa đã trở thành xu hướng mới trong giáo dục vì tính tiện lợi và linh hoạt mà nó mang lại. Khi tham gia Khóa học lập trình AI Python cho người mới bắt đầu online, bạn có thể chủ động sắp xếp thời gian học tập theo lịch trình của mình. Điều này đặc biệt hữu ích đối với những người đang làm việc toàn thời gian hoặc có những cam kết cá nhân khác.</p>\n\n<h4>Tiết kiệm thời gian và chi phí</h4>\n<p>Một trong những lợi ích lớn nhất của học từ xa là bạn không cần phải di chuyển đến các trung tâm đào tạo, từ đó tiết kiệm được thời gian và chi phí đi lại. Bạn có thể học ngay tại nhà, tại văn phòng hoặc bất cứ đâu có kết nối internet.</p>\n\n<h4>Tương tác dễ dàng với giảng viên và học viên khác</h4>\n<p>Ngày nay, các nền tảng học trực tuyến đều cung cấp các công cụ hỗ trợ tương tác như chat, video call, và diễn đàn để học viên có thể trao đổi ý kiến, hỏi đáp với giảng viên và bạn bè, giúp quá trình học tập trở nên sinh động và hiệu quả hơn.</p>\n\n<h3>Kết nối mạng lưới và mở rộng kinh nghiệm</h3>\n<p>Khi tham gia lớp học online, bạn có cơ hội kết nối với những người có cùng niềm đam mê công nghệ từ khắp nơi trên thế giới. Đây là một cơ hội tuyệt vời để mở rộng mạng lưới, trao đổi kinh nghiệm và có thể dẫn đến những cơ hội hợp tác trong tương lai.</p>\n\n<p>Nhìn chung, khóa học lập trình AI Python cho người mới bắt đầu online không chỉ cung cấp những kiến thức cơ bản cần thiết mà còn mang lại nhiều lợi ích của việc học từ xa. Điều này giúp học viên tiết kiệm thời gian và chi phí, đồng thời mở rộng được mạng lưới quen biết trong ngành công nghệ thông tin.</p>\n```"
+              },
+              {
+                "para": "```html\n<h2>2. Các kỹ năng cơ bản cần có để tham gia khóa học lập trình AI Python cho người mới bắt đầu online</h2>\n<p>Để thành công trong khóa học lập trình AI Python cho người mới bắt đầu online, người học cần trang bị cho mình một số kỹ năng cơ bản nhưng vô cùng quan trọng. Những kỹ năng này không chỉ giúp bạn tiếp cận với lập trình một cách dễ dàng hơn mà còn tối ưu hóa hiệu quả học tập và ứng dụng sau này.</p>\n\n<h3>Kỹ năng sử dụng máy tính và internet</h3>\n<p>Trước tiên, có một kỹ năng quan trọng cần có là khả năng sử dụng máy tính và internet. Hầu hết các khóa học online, bao gồm khóa học lập trình AI Python cho người mới bắt đầu, đều yêu cầu người học phải biết cách truy cập và thao tác trên nền tảng học tập trực tuyến.</p>\n<h4>Quản lý tập tin và phần mềm</h4>\n<p>Học viên cần biết cách cài đặt phần mềm, quản lý tập tin, và sử dụng các công cụ gõ văn bản cơ bản. Việc thành thạo trong việc quản lý hệ thống tập tin giúp tiết kiệm thời gian và tránh mất mát dữ liệu quan trọng.</p>\n\n<h3>Kỹ năng tư duy logic và giải quyết vấn đề</h3>\n<p>Tư duy logic là trái tim của lập trình. Trong khóa học lập trình AI Python cho người mới bắt đầu online, các kỹ năng này sẽ được phát triển thông qua việc giải quyết các bài toán cụ thể. Người học sẽ được hướng dẫn từng bước để phân tích và tìm ra giải pháp tối ưu cho các vấn đề.</p>\n<h4>Kỹ năng phân tích và phản biện</h4>\n<p>Phân tích là kỹ năng quan trọng giúp nhận diện vấn đề và tìm kiếm giải pháp hiệu quả. Kỹ năng phản biện giúp kiểm nghiệm, đánh giá lại giải pháp đã chọn từ nhiều góc độ, đảm bảo tính đúng đắn và hiệu quả.</p>\n\n<h3>Kỹ năng tự học và quản lý thời gian</h3>\n<p>Tham gia khóa học online yêu cầu người học phải có kỹ năng tự học tốt. Điều này đặc biệt quan trọng với những người mới bắt đầu, bởi việc tìm hiểu sâu về AI và Python có thể mất nhiều giờ nghiên cứu và luyện tập.</p>\n<p>Kỹ năng quản lý thời gian giúp bạn phân bổ thời gian học tập hợp lý, tránh tình trạng học quá tải hoặc bị gián đoạn. Lập bảng kế hoạch học tập chi tiết và tuân thủ nó sẽ giúp đảm bảo tiến độ và chất lượng học tập.</p>\n\n<p>Nói tóm lại, để bắt đầu và theo đuổi khóa học lập trình AI Python cho người mới bắt đầu online một cách hiệu quả, người học cần trang bị những kỹ năng cơ bản như sử dụng máy tính và internet thành thạo, tư duy logic sắc bén, cùng khả năng tự học và quản lý thời gian tốt. Những kỹ năng này sẽ là nền tảng vững chắc cho bạn không chỉ trong quá trình học tập mà còn trong sự nghiệp phát triển công nghệ thông tin trong tương lai.</p>\n```"
+              },
+              {
+                "para": "```html\n<h2>3. Nội dung chi tiết và phương pháp giảng dạy trong khóa học lập trình AI Python cho người mới bắt đầu online</h2>\n<p>Bước vào thế giới phát triển nhanh chóng của trí tuệ nhân tạo yêu cầu kiến thức và kỹ năng vững chắc. Để đáp ứng nhu cầu này, khóa học lập trình AI Python cho người mới bắt đầu online sẽ cung cấp lộ trình học rõ ràng và chi tiết từ nền tảng cơ bản đến những ứng dụng thực tiễn.</p>\n<h3>Giới thiệu về nội dung khóa học</h3>\n<p>Khóa học tập trung vào việc xây dựng nền tảng lập trình vững chắc cho học viên, đặc biệt là những người mới bước chân vào lĩnh vực AI. Nội dung khóa học được chia thành các phần chính bao gồm: Giới thiệu về Python, cú pháp và cấu trúc cơ bản, xử lý dữ liệu, và sử dụng thư viện AI phổ biến.</p>\n<h4>Giới thiệu về Python</h4>\n<p>Phần đầu tiên của khóa học tập trung vào việc giúp học viên làm quen với ngôn ngữ lập trình Python. Python là một ngôn ngữ lập trình mạnh mẽ và dễ học, rất phổ biến trong các ứng dụng AI. Học viên sẽ được hướng dẫn cài đặt môi trường lập trình và viết những đoạn mã Python đầu tiên.</p>\n<h3>Cấu trúc khóa học và phương pháp giảng dạy</h3>\n<p>Phương pháp giảng dạy của khóa học chú trọng vào việc kết hợp lý thuyết và thực hành, giúp học viên dễ dàng áp dụng những gì đã học vào thực tế. Mỗi bài học đều đi kèm với các bài tập thực hành và dự án nhỏ nhằm củng cố kiến thức.</p>\n<h4>Học qua dự án thực tế</h4>\n<p>Một trong những điểm nổi bật của khóa học là áp dụng cách học qua dự án. Học viên sẽ tham gia vào các dự án nhỏ, tập trung vào việc phát triển ứng dụng AI thực tế, từ đó nắm bắt tốt hơn cách các thuật toán AI được ứng dụng trong thực tiễn.</p>\n<h3>Công cụ và tài nguyên hỗ trợ</h3>\n<p>Khóa học cung cấp cho học viên các công cụ và tài nguyên thiết yếu để học tập như Jupyter Notebook, các thư viện Python như NumPy, Pandas, và TensorFlow. Thêm vào đó, các video và tài liệu học tập được thiết kế để tối ưu hoá trải nghiệm học online, cho phép học viên dễ dàng theo dõi và tự học.</p>\n<p>Khóa học lập trình AI Python cho người mới bắt đầu online là sự lựa chọn lý tưởng cho những ai muốn bắt đầu hành trình trong lĩnh vực trí tuệ nhân tạo và khai thác sức mạnh của Python. Việc áp dụng mô hình học qua dự án và các tài nguyên phong phú sẽ giúp học viên không chỉ nắm vững kiến thức mà còn phát triển kỹ năng thực tiễn cần thiết cho sự nghiệp trong tương lai.</p>\n```"
+              },
+              {
+                "para": "```html\n<h2>4. Hướng dẫn đăng ký và kinh nghiệm học hiệu quả khóa học lập trình AI Python cho người mới bắt đầu online</h2>\n<p>Khóa học lập trình AI Python cho người mới bắt đầu online là một trong những lựa chọn phổ biến hiện nay cho những ai muốn theo đuổi lĩnh vực trí tuệ nhân tạo. Để tham gia vào khóa học, người học cần nắm rõ quy trình đăng ký và áp dụng các kinh nghiệm học tập hiệu quả để đạt kết quả tốt nhất.</p>\n<h3>Hướng dẫn đăng ký khóa học lập trình AI Python</h3>\n<p>Để đăng ký khóa học lập trình AI Python cho người mới bắt đầu online, bạn cần thực hiện theo các bước sau:</p>\n<h4>Bước 1: Tìm kiếm khóa học uy tín</h4>\n<p>Bắt đầu bằng việc tìm kiếm các khóa học lập trình AI Python trực tuyến có đánh giá tốt và uy tín. Bạn có thể tham khảo các nền tảng giáo dục trực tuyến như Coursera, Udacity, edX, hoặc các trang web học lập trình chuyên nghiệp.</p>\n<h4>Bước 2: Đăng ký tài khoản học tập</h4>\n<p>Sau khi chọn được khóa học phù hợp, bạn cần tạo tài khoản trên nền tảng mà khóa học vận hành. Hãy đảm bảo rằng bạn cung cấp đầy đủ thông tin cá nhân và kiểm tra kỹ càng trước khi hoàn tất đăng ký.</p>\n<h4>Bước 3: Thanh toán học phí</h4>\n<p>Nhiều khóa học yêu cầu thanh toán học phí trước khi bắt đầu, vì vậy bạn cần theo dõi các phương thức thanh toán để lựa chọn cách thức phù hợp nhất với mình. Một số khóa học cung cấp tùy chọn học thử miễn phí, tìm hiểu kỹ để tận dụng.</p>\n<h3>Kinh nghiệm học hiệu quả khóa học lập trình AI Python</h3>\n<p>Sau khi đăng ký thành công, việc học tập hiệu quả khóa học lập trình AI Python cho người mới bắt đầu online là rất quan trọng. Dưới đây là một số kinh nghiệm hữu ích:</p>\n<h4>Lập kế hoạch học tập cụ thể</h4>\n<p>Việc tự học đòi hỏi sự kiên trì và kỷ luật. Bạn nên lập một kế hoạch chi tiết bao gồm thời gian học hàng ngày, các chủ đề cần nghiên cứu và thời gian làm bài tập để duy trì tiến độ học tập.</p>\n<h4>Tích cực tham gia cộng đồng học viên</h4>\n<p>Tham gia các diễn đàn, nhóm học viên trên các nền tảng xã hội có thể giúp bạn trao đổi thông tin, giải đáp thắc mắc và học hỏi từ những người có kinh nghiệm hơn.</p>\n<h4>Áp dụng kiến thức vào thực tế</h4>\n<p>Để khắc sâu các kiến thức đã học, bạn nên thường xuyên thực hành viết mã và tham gia vào các dự án nhỏ liên quan đến AI. Điều này không chỉ giúp bạn củng cố kỹ năng mà còn là bước đệm cho sự phát triển sự nghiệp sau này.</p>\n<p>Trên đây là hướng dẫn và kinh nghiệm học tập hiệu quả khóa học lập trình AI Python cho người mới bắt đầu online. Áp dụng đúng cách, bạn sẽ nhanh chóng nắm vững các kiến thức cần thiết và phát triển thêm các kỹ năng lập trình AI của mình.</p>\n```"
+              }
+            ]
+          },
+          "webhookUrl": "https://dxunek.datadex.vn/webhook/ac79fd3f-53f2-41b5-8093-612b4c623cc6",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook3": [
+      {
+        "json": {
+          "headers": {
+            "host": "dxunek.datadex.vn",
+            "user-agent": "axios/1.8.3",
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "194.233.95.119",
+            "cf-ipcountry": "SG",
+            "cf-ray": "9654aa67efae72da-SIN",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "x-forwarded-for": "104.23.175.115",
+            "x-forwarded-host": "dxunek.datadex.vn",
+            "x-forwarded-port": "80",
+            "x-forwarded-proto": "http",
+            "x-forwarded-server": "8e8d85432e18",
+            "x-real-ip": "104.23.175.115"
+          },
+          "params": {},
+          "query": {
+            "website": "https://vippro.appcuatoi.com"
+          },
+          "body": {},
+          "webhookUrl": "https://dxunek.datadex.vn/webhook/a94ad5ce-38f9-49c2-8b84-e443f80e172a",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Promt Tạo Keyword",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nhập Từ Khóa": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Tạo Danh sách từ khóa",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo Danh sách từ khóa": {
+      "main": [
+        [
+          {
+            "node": "Split Keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Nhập Từ Khóa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promt Tạo Keyword": {
+      "main": [
+        [
+          {
+            "node": "Find Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Tiêu đề bài viết",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tiêu đề bài viết": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promt Creat Title": {
+      "main": [
+        [
+          {
+            "node": "Tiêu đề bài viết",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TẠO OUTLINE",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TẠO OUTLINE": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo outline với từ khóa": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu có mô tả sản phẩm": {
+      "main": [
+        [
+          {
+            "node": "Tạo outline với từ khóa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search google",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo Outline cho bài viết": {
+      "main": [
+        [
+          {
+            "node": "TẠO OUTLINE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promt_Research": {
+      "main": [
+        [
+          {
+            "node": "Ref-CONTENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search google": {
+      "main": [
+        [
+          {
+            "node": "Get_Link_Top1_3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Link_Top1_3": {
+      "main": [
+        [
+          {
+            "node": "Promt_Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ref-CONTENT": {
+      "main": [
+        [
+          {
+            "node": "Tạo Outline cho bài viết",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Ref-CONTENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "TẠO OUTLINE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SET1": {
+      "main": [
+        [
+          {
+            "node": "Promt Creat Title",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nếu có mô tả sản phẩm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Outlines": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Paragraph",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Set Outlines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Paragraph": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Viết bài",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Biến outline thành mảng": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Lấy ra bài viết chưa đăng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Lấy ra bài viết chưa đăng1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy ra bài viết chưa đăng1": {
+      "main": [
+        [
+          {
+            "node": "Biến outline thành mảng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo mô tả + main keywork + tags": {
+      "main": [
+        [
+          {
+            "node": "Tạo metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo metadata": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge6": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Tạo mô tả + main keywork + tags",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Tạo metadata",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "CreateOrUpdateTags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code_content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_content": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Post blog to Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "continue - 1": {
+      "main": [
+        [
+          {
+            "node": "continue - 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "continue - 2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Viết bài": {
+      "main": [
+        [
+          {
+            "node": "continue - 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tìm và upload ảnh lên wp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Link bài viết": {
+      "main": [
+        [
+          {
+            "node": "Update Link Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post blog to Wordpress": {
+      "main": [
+        [
+          {
+            "node": "Link bài viết",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "List Tags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateOrUpdateTags": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission2": {
+      "main": [
+        [
+          {
+            "node": "List Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Keywords": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfExistsTag": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Next": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit First Tag": {
+      "main": [
+        [
+          {
+            "node": "Next",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Tags": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get All Categories of Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Categories of Wordpress": {
+      "main": [
+        [
+          {
+            "node": "Update Category To Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Category To Sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Website": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Website": {
+      "main": [
+        [
+          {
+            "node": "Tạo Danh sách từ khóa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Image For Post": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Id Image Featured": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing6": {
+      "main": [
+        [
+          {
+            "node": "Id Image Featured",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm và upload ảnh lên wp": {
+      "main": [
+        [
+          {
+            "node": "List Image For Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation, do nothing6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Key-search": {
+      "main": [
+        [
+          {
+            "node": "Promt_Research1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promt_Research1": {
+      "main": [
+        [
+          {
+            "node": "Tạo text search image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search google1": {
+      "main": [
+        [
+          {
+            "node": "Get_Link_image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Search google1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conver-binary": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "conver-binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CHECK-LINK-IMAGE": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Link_image1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get List Image In Folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Key-search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "CHECK-LINK-IMAGE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "paragraphs": {
+      "main": [
+        [
+          {
+            "node": "SET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get List Image In Folder": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "paragraphs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SET": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "List Website1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload To Wordpress": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy ra bài viết chưa đăng": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "SET1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Tag": {
+      "main": [
+        [
+          {
+            "node": "IfExistsTag",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Tag": {
+      "main": [
+        [
+          {
+            "node": "Next",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Website1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Website1": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Find Website1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo text search image": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items4": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload To Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Images for Post": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Create Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing2": {
+      "main": [
+        [
+          {
+            "node": "Limit First Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Get Images for Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Empty1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "If7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If7": {
+      "main": [
+        [
+          {
+            "node": "If8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If8": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form1": {
+      "main": [
+        [
+          {
+            "node": "Find Website1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Website2": {
+      "main": [
+        [
+          {
+            "node": "Form1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Find Website2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form2": {
+      "main": [
+        [
+          {
+            "node": "Form3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Website4": {
+      "main": [
+        [
+          {
+            "node": "Form2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission4": {
+      "main": [
+        [
+          {
+            "node": "Find Website4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form3": {
+      "main": [
+        [
+          {
+            "node": "Promt Tạo Keyword",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Tạo metadata",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Tạo text search image",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "47550b52-f5e4-41f0-bec1-483510a489c9",
+  "meta": {
+    "instanceId": "588a021bb54b760204dc9fed657516230744845e005fe72c0f4b0664fd815974"
+  },
+  "id": "xa2TeE5aajLBqjLw",
+  "tags": []
+}

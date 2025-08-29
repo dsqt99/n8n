@@ -1,0 +1,4000 @@
+{
+  "name": "Fanpage V3",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    attached_media: $input.all().map(item => ({\n      media_fbid: item.json.id // Giữ danh sách media_fbid từ các item trước\n    })),\n  }\n}];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        2020
+      ],
+      "id": "e67dad94-332e-4638-a404-3904fe801658",
+      "name": "Merge Photo Ids"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        2100
+      ],
+      "id": "64558ac9-afa8-4b8b-ad74-f5cca69564b8",
+      "name": "Merge",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Nhiều Ảnh",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9dd48146-7a45-40dc-b767-b2e2912c9222"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Nhiều Ảnh"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6218b7a5-0a35-47e5-a238-3d47391ca197",
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Một Ảnh",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Một Ảnh"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "729dd07c-e848-4bd6-a674-45493004bded",
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Không Ảnh",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng không ảnh"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "490bd794-3110-4c68-b341-184c245bee34",
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Reels",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Reels"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9e8d0dc7-959a-40ff-adaf-a915188e85f3",
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1f12d000-7084-431d-8126-45067694db0f",
+                    "leftValue": "={{ $json[\"Loại bài viết\"] }}",
+                    "rightValue": "Story_Images",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Story Ảnh"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "033e0992-0069-4854-85c3-8b959a5595b4",
+                    "leftValue": "={{ $json['Loại bài viết'] }}",
+                    "rightValue": "Story_Video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Đăng Story Video"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -200,
+        3140
+      ],
+      "id": "ff3a2dbd-8acf-4d13-9ddb-576d10c9774a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Link",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        560,
+        2020
+      ],
+      "id": "d4af0408-df65-4003-b791-d8b46ef99832",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/feed",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "attached_media",
+              "value": "={{ $json.attached_media }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('ReadContent').item.json.title }}\n\n{{ $('ReadContent').item.json.content }}\n{{ $('ReadContent').item.json['Nội dung bắt buộc'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        2100
+      ],
+      "id": "230b4a48-32c2-4c8a-b450-3d7e54e103e4",
+      "name": "PostFeed"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/photos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('ReadContent').item.json.title }}\n\n{{ $('ReadContent').item.json.content }}\n{{ $('ReadContent').item.json['Nội dung bắt buộc'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        2300
+      ],
+      "id": "841bb788-f059-4ab4-ab58-5bc7ca68a020",
+      "name": "PostSinglePhoto"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/feed",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "attached_media",
+              "value": "={{ $json.attached_media }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('ReadContent').item.json.title }}\n\n{{ $('ReadContent').item.json.content }}\n{{ $('ReadContent').item.json['Nội dung bắt buộc'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        2460
+      ],
+      "id": "86eb66ab-a886-4654-bb3c-14a09a39b82e",
+      "name": "PostFeedText"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=OAuth {{ $('ReadContent').last().json.accessToken }}"
+            },
+            {
+              "name": "file_url",
+              "value": "=https://dxunek.datadex.vn/webhook/0ec0835a-b7f5-4d30-a3aa-f87d0e93e766?url={{ $('Switch').item.json['Link Video'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        2660
+      ],
+      "id": "025f22e5-ab6d-4b99-ba91-593791d65880",
+      "name": "Upload a Local File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/video_reels",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "upload_phase",
+              "value": "start"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        2660
+      ],
+      "id": "b5d1caf1-05cf-4eed-a543-289d281d87ed",
+      "name": "CreateSessionUpload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json['ID Trang'] }}/video_reels",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            },
+            {
+              "name": "video_id",
+              "value": "={{ $('CreateSessionUpload').item.json.video_id }}"
+            },
+            {
+              "name": "upload_phase",
+              "value": "FINISH"
+            },
+            {
+              "name": "video_state",
+              "value": "PUBLISHED"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('ReadContent').item.json.title }}\n\n{{ $('ReadContent').item.json.content }}\n{{ $('ReadContent').item.json['Nội dung bắt buộc'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        2920
+      ],
+      "id": "a2a95297-4e53-4150-a0fd-e36d5f159cec",
+      "name": "Manual Publish"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        2920
+      ],
+      "id": "45c7f487-1d12-41d2-881e-f004096a5313",
+      "name": "Wait",
+      "webhookId": "924656cc-bd66-4587-b976-8aae149f8ea8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/videos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "=http://dxunek:5678/webhook/0ec0835a-b7f5-4d30-a3aa-f87d0e93e766?url={{ $json['Link Video'] }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('ReadContent').item.json.content }}\n{{ $('ReadContent').item.json['Nội dung bắt buộc'] }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('ReadContent').item.json.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        3360
+      ],
+      "id": "4e7f01cb-de01-43be-b1ab-055706429383",
+      "name": "UploadVideo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json[\"ID Trang\"] }}/video_stories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "upload_phase",
+              "value": "start"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        3800
+      ],
+      "id": "97bf4675-2f19-4fbe-8e43-901fbf9e55da",
+      "name": "CreateSessionUploadVideoStory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=OAuth {{ $('ReadContent').last().json.accessToken }}"
+            },
+            {
+              "name": "file_url",
+              "value": "=https://dxunek.datadex.vn/webhook/0ec0835a-b7f5-4d30-a3aa-f87d0e93e766?url={{ $('Switch').item.json['Link Video'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        3800
+      ],
+      "id": "0101e4a5-0184-4938-a204-f98090b1a45f",
+      "name": "Upload Video Story"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json['ID Trang'] }}/video_stories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            },
+            {
+              "name": "video_id",
+              "value": "={{ $('CreateSessionUploadVideoStory').item.json.video_id }}"
+            },
+            {
+              "name": "upload_phase",
+              "value": "finish"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        3800
+      ],
+      "id": "a5b1f7ca-964b-4a95-a316-d3b5d46fab29",
+      "name": "Pushlish Story"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v23.0/{{ $('CreateSessionUploadVideoStory').item.json.video_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            },
+            {
+              "name": "fields",
+              "value": "status"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        3800
+      ],
+      "id": "c7d0381e-b2fc-41f1-9843-344712a0d29b",
+      "name": "GetStatusVideoStory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8733b520-ea60-4703-b922-2a6d80d6588d",
+              "leftValue": "={{ $json.status.processing_phase?.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "94c680be-93b6-4eb5-b6ff-705839287627",
+              "leftValue": "={{ $json.status.copyright_check_status.status }}",
+              "rightValue": "complete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1180,
+        3800
+      ],
+      "id": "0b580fc6-847c-42a2-a86d-a9871cb4df44",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1560,
+        3980
+      ],
+      "id": "b47a12ca-e9e4-4070-9618-b2acd4446357",
+      "name": "Wait1",
+      "webhookId": "68f8668e-01ac-45b0-b65c-f51625c9918c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').last().json[\"ID Trang\"] }}/photos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "published",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        3580
+      ],
+      "id": "ead277b4-352b-404d-a718-4d762f07cd26",
+      "name": "UploadImage"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').item.json['ID Trang'] }}/photo_stories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            },
+            {
+              "name": "photo_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        3580
+      ],
+      "id": "855a4cd9-b325-4cfd-8dcb-5b67f9eb8f44",
+      "name": "PostStory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59bdf330-df02-451e-91dd-cfb37bdc414a",
+              "name": "id",
+              "value": "=stories/{{ $json.post_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2020,
+        3680
+      ],
+      "id": "c342cdd8-40ea-4330-88cf-cb9f42097822",
+      "name": "SetIdStory"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.Link }}",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        760,
+        2020
+      ],
+      "id": "0ae63de5-fc51-4f2f-af45-8a1927a370c8",
+      "name": "DownloadImage",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "s4vmzuANXvCaTyKp",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('ReadContent').last().json[\"ID Trang\"] }}/photos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "published",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        2020
+      ],
+      "id": "c21a5727-1c08-4a24-b09b-a19bfcb943ec",
+      "name": "UploadToPhotos"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('ReadContent').last().json.Link[0] }}",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        400,
+        2300
+      ],
+      "id": "f66e63b2-1c9b-4b7a-a922-4441f1f0b026",
+      "name": "DownloadImage2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "s4vmzuANXvCaTyKp",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d20c173b-3b4a-4555-817b-3ab3ac699d30",
+              "name": "content",
+              "value": "={{ $json[\"Nội dung chính\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "37814ce7-fb97-4fc8-8181-6dbe545c2464",
+              "name": "title",
+              "value": "={{ $json[\"Chủ đề\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -920,
+        3360
+      ],
+      "id": "dc95d667-358d-4d12-827a-514fd2eff68e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d9188620-4c52-42d1-91dd-a71c5367b1bd",
+              "leftValue": "={{ $json[\"AI Agent\"] }}",
+              "rightValue": "Có",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -940,
+        3000
+      ],
+      "id": "32b54da3-d86b-488e-aa89-f41dda2bef62",
+      "name": "IfUseAIAgent"
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = [];\nfor(const item of $('Data').all()) {\n  list.push({\n    ... item.json,\n    accessToken: $('FindPage').first().json[\"Access Token\"],\n    Link: \n      [item.json[\"Ảnh 1(Đại diện)\"],\n      item.json['Ảnh 2'],\n      item.json['Ảnh 4'],\n      item.json['Ảnh 5'],\n      item.json['Ảnh 6'],\n      item.json['Ảnh 7'],\n      item.json['Ảnh 8'],\n      item.json['Ảnh 9'],\n      item.json['Ảnh 10']\n    ].filter(x => !!x),\n    content: $input.last().json.content,\n    title: $input.last().json.title,\n  })\n}\nreturn list;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        3360
+      ],
+      "id": "f3a8f4f7-3ff4-4699-afa6-c91439ab3075",
+      "name": "ReadContent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1220,
+        1960
+      ],
+      "id": "f6b890ee-3e77-44e3-824f-f269e5d11fca",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11SWC5VyspWd23SSZOnkxIzkB1FbunIyu_DcQ4Fx0l5k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STT": "={{ $('ReadContent').last().json.STT }}",
+            "Link bài đăng": "=http://facebook.com/{{ $json.id }}",
+            "Trạng thái": "Thành Công"
+          },
+          "matchingColumns": [
+            "STT"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trang",
+              "displayName": "Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID Trang",
+              "displayName": "ID Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Chủ đề",
+              "displayName": "Chủ đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung chính",
+              "displayName": "Nội dung chính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung bắt buộc",
+              "displayName": "Nội dung bắt buộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Thời gian đăng",
+              "displayName": "Thời gian đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link bài đăng",
+              "displayName": "Link bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ảnh 1(Đại diện)",
+              "displayName": "Ảnh 1(Đại diện)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 2",
+              "displayName": "Ảnh 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 3",
+              "displayName": "Ảnh 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 4",
+              "displayName": "Ảnh 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 5",
+              "displayName": "Ảnh 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 6",
+              "displayName": "Ảnh 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 7",
+              "displayName": "Ảnh 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 8",
+              "displayName": "Ảnh 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 9",
+              "displayName": "Ảnh 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 10",
+              "displayName": "Ảnh 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2240,
+        2460
+      ],
+      "id": "a2a4a76f-e01e-408b-8411-06cdfc2fc98b",
+      "name": "UpdateStatusSuccess",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        400,
+        2120
+      ],
+      "id": "62e37e42-3659-4f15-988a-174a04862e4f",
+      "name": "Next"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        560,
+        2180
+      ],
+      "id": "ab2988a5-d106-4e13-8ae0-a0e0f66b51dd",
+      "name": "Next1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        2180
+      ],
+      "id": "9926264f-ae4f-4efd-8894-ec2159ed325d",
+      "name": "Next2"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.Link[0] }}",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        400,
+        3580
+      ],
+      "id": "69a412bd-6302-4dad-822b-3725249b809c",
+      "name": "DownloadImageStory",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "s4vmzuANXvCaTyKp",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1902888278,
+          "mode": "list",
+          "cachedResultName": "Page",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit#gid=1902888278"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID trang",
+              "lookupValue": "={{ $json[\"ID Trang\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -940,
+        2740
+      ],
+      "id": "80a5da12-2516-4457-801d-247d2a277a8c",
+      "name": "FindPage",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('Loop Over Items').all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        2740
+      ],
+      "id": "f9b854c3-abf0-4b36-8bb9-1a879a85e893",
+      "name": "Data"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2660,
+        3980
+      ],
+      "id": "adb366b5-c013-45ff-9d9d-7d0f305073d4",
+      "name": "WaitContinueStep",
+      "webhookId": "68f8668e-01ac-45b0-b65c-f51625c9918c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6ee6f2e0-7f8f-432c-9a5e-2d8ca6a30b07",
+              "name": "title",
+              "value": "={{ $json.output.title }}",
+              "type": "string"
+            },
+            {
+              "id": "9e0fdd15-51c3-414f-84b2-2c7d361e8d09",
+              "name": "content",
+              "value": "={{ $json.output.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -420,
+        3000
+      ],
+      "id": "abaa847a-3f4b-4f88-82a2-31c87be60da3",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"The headline for the social meadia post\",\n\t\"content\": \"The formatted social media post\" \n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -580,
+        3220
+      ],
+      "id": "6e70bbf4-b334-4e9c-8848-f8dd38861df2",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        3220
+      ],
+      "id": "50ae690d-05fa-4d55-98cb-b900754412c8",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "npnMtU7kA3sNSLyr",
+          "name": "OpenAi Chatbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Chủ đề: {{ $json['Chủ đề'] }}\nNội dung chính: {{ $json['Nội dung chính'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Bạn là 1 chuyên gia về Lĩnh vực sức khỏe Đông y. Bạn viết nội dung chia sẻ kiến thức về sức khỏe và cộng đồng, và đăng tải trên 1 trang Facebook. Bạn hãy viết cho tôi 1 Status Facebook chia sẻ về chủ đề và bao gồm các nội dung chính của người dùng. lấy thêm cho tôi 5 hastag phổ biến về chủ đề.\n\nOutput Format:\n- Trả kết quả bằng tiếng việt.\n- Xuống dòng ở tiêu đề.\n- Status sẽ viết bằng định dạng văn bản, không có format in đậm, in nghiêng, ...\n- Luôn luôn sử dụng SerpAPI để tìm ra keyword SEO tốt nhất.\n- Sử dụng biểu tượng cảm xúc (emoji) ở đầu dòng để làm nổi bật các ý chính, ví dụ: ♥️, 🍀, 🏵️, ⭐… không chèn vào cuối câu, cuối đoạn.\n- Giữ nội dung ngắn gọn, thu hút, không dịch từng từ mà đảm bảo ý nghĩa trôi chảy, dễ đọc\n- Tránh các câu quá dài, giữ bài viết dễ hiểu, giọng điệu tự nhiên\n- Đảm bảo đúng chính tả, ngữ pháp tiếng Việt, tuyệt đối không dùng ký hiệu * hoặc ** trong bài viết."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -760,
+        3000
+      ],
+      "id": "99ba9234-d221-46ea-93fa-7440edf09263",
+      "name": "Think",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1203419718,
+          "mode": "list",
+          "cachedResultName": "Kết quả",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit#gid=1203419718"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link bài đăng": "={{ $json[\"Link bài đăng\"] }}",
+            "Thời gian đăng": "={{ $now.toISO() }}",
+            "Trạng thái": "={{ $json[\"Trạng thái\"] }}",
+            "STT": "={{ $('ReadContent').item.json.STT }}",
+            "ID Trang": "={{ $('ReadContent').item.json[\"ID Trang\"] }}",
+            "Trang": "={{ $('ReadContent').item.json.Trang }}",
+            "AI Agent": "={{ $('ReadContent').item.json[\"AI Agent\"] }}",
+            "Loại bài viết": "={{ $('ReadContent').item.json[\"Loại bài viết\"] }}",
+            "Chủ đề": "={{ $('ReadContent').item.json.title }}",
+            "Nội dung chính": "={{ $('ReadContent').item.json.content }}",
+            "Nội dung bắt buộc": "={{ $('ReadContent').item.json[\"Nội dung bắt buộc\"] }}"
+          },
+          "matchingColumns": [
+            "STT"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trang",
+              "displayName": "Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID Trang",
+              "displayName": "ID Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Loại bài viết",
+              "displayName": "Loại bài viết",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Agent",
+              "displayName": "AI Agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thời gian đăng",
+              "displayName": "Thời gian đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chủ đề",
+              "displayName": "Chủ đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung chính",
+              "displayName": "Nội dung chính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung bắt buộc",
+              "displayName": "Nội dung bắt buộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link bài đăng",
+              "displayName": "Link bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2460,
+        2460
+      ],
+      "id": "dc4cc71f-ba82-4f99-9dd1-5fa3dd201b94",
+      "name": "UpdateResult",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=1203419718#gid=1203419718",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STT": "={{ $json.STT }}",
+            "Trạng thái": "Queue"
+          },
+          "matchingColumns": [
+            "STT"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trang",
+              "displayName": "Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID Trang",
+              "displayName": "ID Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Loại bài viết",
+              "displayName": "Loại bài viết",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Agent",
+              "displayName": "AI Agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Thời gian đăng",
+              "displayName": "Thời gian đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Chủ đề",
+              "displayName": "Chủ đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung chính",
+              "displayName": "Nội dung chính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung bắt buộc",
+              "displayName": "Nội dung bắt buộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link bài đăng",
+              "displayName": "Link bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link Video",
+              "displayName": "Link Video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 1(Đại diện)",
+              "displayName": "Ảnh 1(Đại diện)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 2",
+              "displayName": "Ảnh 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 3",
+              "displayName": "Ảnh 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 4",
+              "displayName": "Ảnh 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 5",
+              "displayName": "Ảnh 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 6",
+              "displayName": "Ảnh 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 7",
+              "displayName": "Ảnh 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 8",
+              "displayName": "Ảnh 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 9",
+              "displayName": "Ảnh 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 10",
+              "displayName": "Ảnh 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -660,
+        2460
+      ],
+      "id": "98e12da7-f90c-43d4-a41b-005bf6ab4a6d",
+      "name": "UpdateToQueue",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1240,
+        2740
+      ],
+      "id": "25852302-1b4a-4bc8-8c7a-6a0d85e89ec9",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "## Đăng bài Fanpage all in one và nội dung tự động bằng Open Ai\nTừng bước cấu hình trong các node, lưu ý bỏ ghim ở node google sheet khi chạy\n![](https://datadex.vn/storage/2025/06/0610-Cover.jpg)\n## **[Video Hướng dẫn](https://youtu.be/sBio7opyo_0)",
+        "height": 580,
+        "width": 640
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -660,
+        1540
+      ],
+      "typeVersion": 1,
+      "id": "d87ad424-851f-41b3-a8b4-283cd4f07704",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=1203419718#gid=1203419718",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Trạng thái",
+              "lookupValue": "Chờ Đăng"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -920,
+        1960
+      ],
+      "id": "a334b822-f806-4b75-80b7-567920c50578",
+      "name": "GetAllPending",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Cứ 1 phút sẽ kiểm tra sheet 1 lần.\n- Lấy ra toàn bộ nội dung chờ đăng",
+        "height": 260,
+        "width": 580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1260,
+        1860
+      ],
+      "typeVersion": 1,
+      "id": "0e32adf0-40b6-40d9-944c-2474afdc1275",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5db2a872-9357-4312-b8a9-b3f7e3fb3943",
+              "leftValue": "={{ $json[\"Thời gian đăng\"] }}",
+              "rightValue": "={{ $now.toISO() }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1220,
+        2260
+      ],
+      "id": "4b9fd2f5-d0f0-47b9-94a3-2078045d2663",
+      "name": "IfTimeExists"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5db2a872-9357-4312-b8a9-b3f7e3fb3943",
+              "leftValue": "={{ $json.formattedDate }}",
+              "rightValue": "={{ $now.toISO() }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -660,
+        2260
+      ],
+      "id": "102f58dc-e8b7-4a7a-8644-02bb8a14e81f",
+      "name": "IfTimeIsPresent"
+    },
+    {
+      "parameters": {
+        "content": "## Kiểm tra cài đặt thời gian đăng và thời gian đăng này có hợp lệ hay không",
+        "height": 200,
+        "width": 1000
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1260,
+        2180
+      ],
+      "typeVersion": 1,
+      "id": "c5b023a7-9888-4b98-8fc7-c1835ec10d3c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Đưa toàn bộ bài đăng hợp lệ vào Queue\n- Và lấy ra các bài đăng hợp lệ",
+        "height": 180,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        2420
+      ],
+      "typeVersion": 1,
+      "id": "6a465eec-acdf-4edc-bde8-3d6b6387e35d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json[\"Thời gian đăng\"] }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd'T'HH:mm:ss.000+07:00",
+        "options": {
+          "includeInputFields": true,
+          "fromFormat": "d/MM/yyyy HH:mm:ss",
+          "timezone": true
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -940,
+        2260
+      ],
+      "id": "393e43c4-f7e6-4f2f-80e5-ed4301059a2a",
+      "name": "FormatTime"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -1220,
+        2460
+      ],
+      "id": "25c53ec2-eb44-42bb-ba94-f1952853346f",
+      "name": "MergeContent"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('MergeContent').all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        2460
+      ],
+      "id": "d876d76e-d095-4e0f-b004-6d3a3b042cf9",
+      "name": "AllContent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        2260
+      ],
+      "id": "ec3bcbf7-1b1f-40d7-8e46-1a89fea68185",
+      "name": "Bài đăng chưa tới giờ"
+    },
+    {
+      "parameters": {
+        "content": "## Lấy Access Token và Prompt\n",
+        "height": 240,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        2660
+      ],
+      "typeVersion": 1,
+      "id": "4e5c5036-25bc-4991-ad0d-642340883541",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## AI AGENT\nNếu yêu cầu AI Tạo nội dung, Thì sẽ đưa vào luồng AI Agent. Không thì đưa trực tiếp vào đăng bài\n",
+        "height": 580,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        2920
+      ],
+      "typeVersion": 1,
+      "id": "1cfd672f-a455-4eae-b350-b6f314e4892c",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        400,
+        2460
+      ],
+      "id": "29d36054-4f5c-4a0c-84ea-6eb312d3c99e",
+      "name": "No Operation"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo ra 1 luồng mới để upload hình ảnh\n- Upload toàn bộ hình ảnh lên photos facebook ở chế nó published = false",
+        "height": 220,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        540,
+        1940
+      ],
+      "typeVersion": 1,
+      "id": "766690d4-326d-45f7-814e-7ede9cd403f6",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Gom các photo id lại thành 1 mảng",
+        "height": 220,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        1940
+      ],
+      "typeVersion": 1,
+      "id": "1ec4237b-7074-48e9-807d-b2d1bade57dc",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Đăng bài\nĐăng nội dung kèm theo toàn bộ ID photo",
+        "height": 240,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        2000
+      ],
+      "typeVersion": 1,
+      "id": "a7dcb096-e0a4-4dd7-a90f-9ad513ac4c94",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Cập nhật trạng thái\n- Cập nhật trạng thái của nội dung và add bài đã đang vào phần kết quả",
+        "height": 240,
+        "width": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1980,
+        2360
+      ],
+      "typeVersion": 1,
+      "id": "c70b42c2-c9e6-4266-9a04-50016d64f1a4",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STT": "={{ $('Data').item.json.STT }}",
+            "Trạng thái": "Chờ Đăng"
+          },
+          "matchingColumns": [
+            "STT"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trang",
+              "displayName": "Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID Trang",
+              "displayName": "ID Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Loại bài viết",
+              "displayName": "Loại bài viết",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Agent",
+              "displayName": "AI Agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Thời gian đăng",
+              "displayName": "Thời gian đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Chủ đề",
+              "displayName": "Chủ đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung chính",
+              "displayName": "Nội dung chính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung bắt buộc",
+              "displayName": "Nội dung bắt buộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link bài đăng",
+              "displayName": "Link bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link Video",
+              "displayName": "Link Video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 1(Đại diện)",
+              "displayName": "Ảnh 1(Đại diện)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 2",
+              "displayName": "Ảnh 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 3",
+              "displayName": "Ảnh 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 4",
+              "displayName": "Ảnh 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 5",
+              "displayName": "Ảnh 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 6",
+              "displayName": "Ảnh 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 7",
+              "displayName": "Ảnh 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 8",
+              "displayName": "Ảnh 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 9",
+              "displayName": "Ảnh 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 10",
+              "displayName": "Ảnh 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1180,
+        3000
+      ],
+      "id": "51f70332-8d50-452b-a2c6-2d55605b15e8",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FTFDT8ZBWVzqLvQP",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ae3abbae-7427-4ec2-bf47-5c8ba7551459",
+                    "leftValue": "={{ $json.status.uploading_phase.status }}",
+                    "rightValue": "complete",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "complete"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dde63ce1-c7bc-4638-b71d-4167bf26b0af",
+                    "leftValue": "={{ $json.status.uploading_phase.status }}",
+                    "rightValue": "error",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1100,
+        2660
+      ],
+      "id": "e070a49e-a150-4c40-badf-5fb317a4539d",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ea21460e-aa4f-42d2-953a-6330106850a1",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1840,
+        2640
+      ],
+      "id": "883bd314-aca8-4545-8b35-4f1e6d6f988b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "path": "0ec0835a-b7f5-4d30-a3aa-f87d0e93e766",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryBinary",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1220,
+        1660
+      ],
+      "id": "a6a398db-2710-4fb8-8b5a-d45103c7351a",
+      "name": "Webhook1",
+      "webhookId": "0ec0835a-b7f5-4d30-a3aa-f87d0e93e766"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.query.url }}",
+          "mode": "url"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1040,
+        1660
+      ],
+      "id": "bcb814e1-f229-4077-9e82-d14bcbcca3e9",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "qwY2h3fXNNEXEv2I",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jCxlzftqpCiycOcHqe7FZmR0IBTF0L6BJCb_CDXzhZ8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11SWC5VyspWd23SSZOnkxIzkB1FbunIyu_DcQ4Fx0l5k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STT": "={{ $('ReadContent').last().json.STT }}",
+            "Trạng thái": "Lỗi",
+            "Ghi chú": "={{ $json.note }}"
+          },
+          "matchingColumns": [
+            "STT"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trang",
+              "displayName": "Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID Trang",
+              "displayName": "ID Trang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Loại bài viết",
+              "displayName": "Loại bài viết",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Agent",
+              "displayName": "AI Agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Thời gian đăng",
+              "displayName": "Thời gian đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Chủ đề",
+              "displayName": "Chủ đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung chính",
+              "displayName": "Nội dung chính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội dung bắt buộc",
+              "displayName": "Nội dung bắt buộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ghi chú",
+              "displayName": "Ghi chú",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link bài đăng",
+              "displayName": "Link bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link Video",
+              "displayName": "Link Video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 1(Đại diện)",
+              "displayName": "Ảnh 1(Đại diện)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 2",
+              "displayName": "Ảnh 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 3",
+              "displayName": "Ảnh 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 4",
+              "displayName": "Ảnh 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 5",
+              "displayName": "Ảnh 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 6",
+              "displayName": "Ảnh 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 7",
+              "displayName": "Ảnh 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 8",
+              "displayName": "Ảnh 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 9",
+              "displayName": "Ảnh 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ảnh 10",
+              "displayName": "Ảnh 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2460,
+        2780
+      ],
+      "id": "7233eb0e-c218-47ce-808d-3e68d0baf647",
+      "name": "UpdateStatusSuccess1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AxWVGvJ75f8LaApa",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e61dffca-fd3c-477f-9110-ad7ca2fe519f",
+              "name": "note",
+              "value": "Lỗi bản quyền, có thể nhạc hoặc video dính bản quyền",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1840,
+        3100
+      ],
+      "id": "b36c0895-5e09-46ac-aba3-1c223b23bcf6",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f914544-2470-4a15-b0db-53705336054b",
+              "name": "note",
+              "value": "={{ $json.status.processing_phase.errors[0].message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1840,
+        2920
+      ],
+      "id": "449995e4-2300-47a9-80f3-5d3c05b6e2b7",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v22.0/{{ $('CreateSessionUpload').item.json.video_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "status "
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        2660
+      ],
+      "id": "075eafe0-8b03-4f39-babf-0daa6f8dd8fa",
+      "name": "CheckUpload"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v22.0/{{ $('CreateSessionUpload').item.json.video_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "status "
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('ReadContent').item.json.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        2920
+      ],
+      "id": "06b2e35f-9600-429e-84ef-0c399e16e57c",
+      "name": "CheckPublishStatus"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ae3abbae-7427-4ec2-bf47-5c8ba7551459",
+                    "leftValue": "={{ $json.status.uploading_phase.status }}",
+                    "rightValue": "complete",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "complete"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dde63ce1-c7bc-4638-b71d-4167bf26b0af",
+                    "leftValue": "={{ $json.status.uploading_phase.status }}",
+                    "rightValue": "error",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "error"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e1e29840-9e7a-4e4e-b381-f2e4decc8052",
+                    "leftValue": "={{ $json.status.copyright_check_status.matches_found }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "copyright_check_status"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        920,
+        2920
+      ],
+      "id": "05a99717-bc6c-4027-8098-8d0b94aa7226",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5efa5182-fe6d-4023-b4a4-76bfb093029c",
+              "leftValue": "={{ $json.status.publishing_phase.status }}",
+              "rightValue": "complete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1060,
+        3100
+      ],
+      "id": "9c7049a3-9812-40d1-9081-43c5dc6436a4",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        400,
+        3360
+      ],
+      "id": "41228325-fa5d-4ef9-88b4-5b80e6ac5833",
+      "name": "NextUploadVideo"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        2920
+      ],
+      "id": "2f54e3a5-ab8c-49a3-afcf-043f55893af2",
+      "name": "NextShowErrror"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        2640
+      ],
+      "id": "069ecbc0-c325-4aa2-8c37-968aedb8814c",
+      "name": "Success"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        3100
+      ],
+      "id": "21e1cbd8-b718-4244-ac10-e3d5a5524298",
+      "name": "Lỗi bản quyền"
+    },
+    {
+      "parameters": {
+        "content": "## Tạo 1 http link video\nĐể facebook có thể tải video lên trực tiếp qua url",
+        "height": 280,
+        "width": 580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1260,
+        1540
+      ],
+      "typeVersion": 1,
+      "id": "b9c77c72-523f-4abc-b0fb-5e43f5811c90",
+      "name": "Sticky Note10"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "DownloadImage2": {
+      "main": [
+        [
+          {
+            "node": "PostSinglePhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UploadToPhotos": {
+      "main": [
+        [
+          {
+            "node": "Merge Photo Ids",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateToQueue": {
+      "main": [
+        [
+          {
+            "node": "AllContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Next": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Next1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ReadContent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Next2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Photo Ids": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "PostFeed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Next",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DownloadImage2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CreateSessionUpload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NextUploadVideo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DownloadImageStory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CreateSessionUploadVideoStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "DownloadImage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PostFeed": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PostSinglePhoto": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PostFeedText": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a Local File": {
+      "main": [
+        [
+          {
+            "node": "CheckUpload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateSessionUpload": {
+      "main": [
+        [
+          {
+            "node": "Upload a Local File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Publish": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "CheckPublishStatus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UploadVideo": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateSessionUploadVideoStory": {
+      "main": [
+        [
+          {
+            "node": "Upload Video Story",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Video Story": {
+      "main": [
+        [
+          {
+            "node": "GetStatusVideoStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pushlish Story": {
+      "main": [
+        [
+          {
+            "node": "SetIdStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetStatusVideoStory": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Pushlish Story",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "GetStatusVideoStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UploadImage": {
+      "main": [
+        [
+          {
+            "node": "PostStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PostStory": {
+      "main": [
+        [
+          {
+            "node": "SetIdStory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetIdStory": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DownloadImage": {
+      "main": [
+        [
+          {
+            "node": "UploadToPhotos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "ReadContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfUseAIAgent": {
+      "main": [
+        [
+          {
+            "node": "Think",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "GetAllPending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateStatusSuccess": {
+      "main": [
+        [
+          {
+            "node": "UpdateResult",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Next1": {
+      "main": [
+        [
+          {
+            "node": "Next2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DownloadImageStory": {
+      "main": [
+        [
+          {
+            "node": "UploadImage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FindPage": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "IfUseAIAgent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WaitContinueStep": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output": {
+      "main": [
+        [
+          {
+            "node": "ReadContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Think",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Think",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateResult": {
+      "main": [
+        [
+          {
+            "node": "WaitContinueStep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "FindPage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetAllPending": {
+      "main": [
+        [
+          {
+            "node": "IfTimeExists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfTimeExists": {
+      "main": [
+        [
+          {
+            "node": "FormatTime",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MergeContent",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IfTimeIsPresent": {
+      "main": [
+        [
+          {
+            "node": "MergeContent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Bài đăng chưa tới giờ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FormatTime": {
+      "main": [
+        [
+          {
+            "node": "IfTimeIsPresent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MergeContent": {
+      "main": [
+        [
+          {
+            "node": "UpdateToQueue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AllContent": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation": {
+      "main": [
+        [
+          {
+            "node": "PostFeedText",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Manual Publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NextShowErrror",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateStatusSuccess1": {
+      "main": [
+        [
+          {
+            "node": "WaitContinueStep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatusSuccess1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CheckUpload": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CheckPublishStatus": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NextShowErrror",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lỗi bản quyền",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NextUploadVideo": {
+      "main": [
+        [
+          {
+            "node": "UploadVideo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NextShowErrror": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lỗi bản quyền": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "96712c79-630d-4bc2-b27d-4f10aaa383e1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "588a021bb54b760204dc9fed657516230744845e005fe72c0f4b0664fd815974"
+  },
+  "id": "SXnugh6AYfVI3OJV",
+  "tags": []
+}

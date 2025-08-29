@@ -1,0 +1,1066 @@
+{
+  "name": "Demo Fanpage",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3560,
+        180
+      ],
+      "id": "a5d6e73c-6614-423f-8cbe-93c2cc7f1d58"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "List of pages",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -3340,
+        180
+      ],
+      "id": "0405defc-6c41-44e1-aabe-5fd6c73d8efc",
+      "name": "List of pages",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -3120,
+        200
+      ],
+      "id": "591ee30d-8750-46f2-a876-afb285363ab8",
+      "name": "Loop Page"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "output = []\n\nfor item in _input.all():\n  for data in item.json.data:\n    output.append({\n      \"data\": data\n    })\n\nreturn output"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2640,
+        200
+      ],
+      "id": "f702be0b-184a-47e7-b67c-bca10f6f205b",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v23.0/760586630461615/feed",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "EACPQMuykpvEBO1mdrG2jh3twfXurWYohSU3TVMxgD3yObeg1kkcTzjxi8ZBqv5wXa6mwqyZBEx3QgDy4jDFGFcmZCdo9lmv5dZCITzx0LzPvEhqevrBxjAIizEqNoZBf4AN0FnZBwdHdZASgGdYWZCZAFs6DkfpDvPlHZCEdP8FCyZCdketzWZCGYLZBJkJFZBWnRWFkJ3ZCw8RbnlsM8hZCKgHZAwx89cHEV"
+            },
+            {
+              "name": "fields",
+              "value": "id,message,story,created_time,permalink_url,attachments{media,media_type}"
+            },
+            {
+              "name": "limit",
+              "value": "100"
+            },
+            {
+              "name": "after"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "after",
+                    "value": "={{ $response.body.paging.cursors.after }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.body.data.length == 0 }}",
+              "requestInterval": 100
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2860,
+        200
+      ],
+      "id": "60ee944e-faaf-4fcd-89a7-e3184774a56d",
+      "name": "Get All Posts"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1f6cd45b-c507-4396-b35d-456fa086c3dd",
+              "leftValue": "={{ $('Loop Post').first().json.data.attachments }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1500,
+        180
+      ],
+      "id": "f5084d45-a9e8-41fe-9f4a-a1220e1196a4",
+      "name": "Post"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Post').item.json.data.attachments.data[0].media_type }}",
+                    "rightValue": "video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3ab4aa9d-51d9-4b96-938d-7bfdfaad3cc0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8ab20297-fa33-4622-869c-f454f18c34ca",
+                    "leftValue": "={{ $('Loop Post').item.json.data.attachments.data[0].media_type }}",
+                    "rightValue": "photo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "aa221eab-a904-44e0-b6da-426639ddfb85",
+                    "leftValue": "={{ $('Loop Post').item.json.data.attachments.data[0].media_type }}",
+                    "rightValue": "album",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "album"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1240,
+        0
+      ],
+      "id": "3a2b9d32-7a18-4092-93d8-7482ede7f1f3",
+      "name": "Switch",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Post Url",
+              "lookupValue": "={{ $json.data.permalink_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1920,
+        200
+      ],
+      "id": "49abc2c9-af6f-4f54-844d-83878d0ec5b6",
+      "name": "get posts to check exist",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a401d36c-7dae-4c43-8d9a-a6ac7075a6c9",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1700,
+        200
+      ],
+      "id": "4603e2fa-63e7-458b-9c6c-ca99ca976ad2",
+      "name": "check exist"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2380,
+        200
+      ],
+      "id": "ce083e58-10b4-4735-a214-c7250eacd863",
+      "name": "Loop Post"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Content": "={{ $('Loop Post').first().json.data.story || $('Loop Post').first().json.data.message }}",
+            "Date": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd HH:mm:ss') }}",
+            "Day": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd') }}",
+            "ID Page": "={{ $('Loop Page').first().json[\"ID Page\"] }}",
+            "media_url": "={{ $('Loop Post').item.json.data.attachments.data[0].media.image.src }}",
+            "message_type": "={{ $('Loop Post').item.json.data.attachments.data[0].media_type }}",
+            "Post Url": "={{ $('Loop Post').first().json.data.permalink_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Page",
+              "displayName": "ID Page",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post Url",
+              "displayName": "Post Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "media_url",
+              "displayName": "media_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Day",
+              "displayName": "Day",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -920,
+        80
+      ],
+      "id": "757fce5c-1f4c-4455-868d-14b887f30f58",
+      "name": "Album Saver",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Content": "={{ $('Loop Post').first().json.data.story || $('Loop Post').first().json.data.message }}",
+            "Date": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd HH:mm:ss') }}",
+            "Day": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd') }}",
+            "ID Page": "={{ $('Loop Page').first().json[\"ID Page\"] }}",
+            "media_url": "={{ $('Loop Post').first().json.data.attachments.data[0].media.image.src }}",
+            "message_type": "={{ $('Loop Post').first().json.data.attachments.data[0].media_type}}",
+            "Post Url": "={{ $('Loop Post').first().json.data.permalink_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Page",
+              "displayName": "ID Page",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post Url",
+              "displayName": "Post Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "media_url",
+              "displayName": "media_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Day",
+              "displayName": "Day",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -920,
+        -120
+      ],
+      "id": "6fb6d764-87bd-4b55-9df8-f360fd01a4b1",
+      "name": "Photo Saver",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Content": "={{ $('Loop Post').first().json.data.message }}",
+            "Date": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd HH:mm:ss') }}",
+            "Day": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd') }}",
+            "ID Page": "={{ $('Loop Page').first().json[\"ID Page\"] }}",
+            "media_url": "={{ $json.webContentLink || ''}}",
+            "message_type": "text",
+            "Post Url": "={{ $('Loop Post').first().json.data.permalink_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Page",
+              "displayName": "ID Page",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post Url",
+              "displayName": "Post Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "media_url",
+              "displayName": "media_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Day",
+              "displayName": "Day",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -920,
+        240
+      ],
+      "id": "2c2790e6-7adf-4176-a66a-77082ecb1647",
+      "name": "Text Saver",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1168092593,
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HECxZ7Zn1ldf37iY5l2nYHFVSAOCHLrExLwcCiXbQZ8/edit#gid=1168092593"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Content": "={{ $('Loop Post').first().json.data.story || $('Loop Post').first().json.data.message }}",
+            "Date": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd HH:mm:ss') }}",
+            "Day": "={{ $('Loop Post').first().json.data.created_time.toDateTime().format('yyyy-MM-dd') }}",
+            "ID Page": "={{ $('Loop Page').first().json[\"ID Page\"] }}",
+            "media_url": "={{ $('Loop Post').first().json.data.attachments.data[0].media.source }}",
+            "message_type": "={{ $('Loop Post').first().json.data.attachments.data[0].media_type }}",
+            "Post Url": "={{ $('Loop Post').first().json.data.permalink_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Page",
+              "displayName": "ID Page",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post Url",
+              "displayName": "Post Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "media_url",
+              "displayName": "media_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Day",
+              "displayName": "Day",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -920,
+        -320
+      ],
+      "id": "74a227fc-ba44-4660-9b37-8ed2ac10f4eb",
+      "name": "Video Saver",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2140,
+        220
+      ],
+      "id": "de7d5e05-5b8d-4764-9c72-8c13313c9aa6",
+      "name": "Wait",
+      "webhookId": "dbc2efec-c069-4c9b-8783-3304abe3ec76"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "get posts to check exist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "List of pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List of pages": {
+      "main": [
+        [
+          {
+            "node": "Loop Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Page": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get All Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Posts": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Saver",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Video Saver",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Photo Saver",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Album Saver",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get posts to check exist": {
+      "main": [
+        [
+          {
+            "node": "check exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check exist": {
+      "main": [
+        [
+          {
+            "node": "Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Post": {
+      "main": [
+        [
+          {
+            "node": "Loop Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Album Saver": {
+      "main": [
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Saver": {
+      "main": [
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Saver": {
+      "main": [
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video Saver": {
+      "main": [
+        [
+          {
+            "node": "Loop Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "get posts to check exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2cfbcca0-d680-4b05-a296-be8fc47726e1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "CKweeSvAbcPvKm6o",
+  "tags": []
+}

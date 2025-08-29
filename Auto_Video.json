@@ -1,0 +1,238 @@
+{
+  "name": "Auto Video",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=107XzulQWaJQ2DhyBWEJLyDDUdwV9uaYF",
+        "options": {}
+      },
+      "id": "63c9f9c1-7a45-45fb-9762-ed86598df113",
+      "name": "Tải ảnh 3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -160,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "/home/node/n8n_tmp/anh1.jpg",
+        "options": {}
+      },
+      "id": "1b9d4e5d-aaf4-4104-9cc8-c26b61baa709",
+      "name": "Lưu ảnh 1",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        60,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "/home/node/n8n_tmp/anh2.jpg",
+        "options": {}
+      },
+      "id": "5c5ee367-4d28-4e3e-8833-67da63e86528",
+      "name": "Lưu ảnh 2",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        60,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "/home/node/n8n_tmp/anh3.jpg",
+        "options": {}
+      },
+      "id": "e3f43157-3420-436b-a2df-3cbf3902f8d4",
+      "name": "Lưu ảnh 3",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        60,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=1v69anAqHsOog5Vd2RqhHQUj2_xANY4r5",
+        "options": {}
+      },
+      "id": "3fbea981-31a1-4449-87fd-1a9e2911577d",
+      "name": "Tải ảnh 4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -160,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=1jgYMnERdmyn2iToE--A9HfOss5tZoQ9o",
+        "options": {}
+      },
+      "id": "f7acdb41-ea1e-4a3f-9c5f-6a8500cbe1e8",
+      "name": "Tải ảnh 5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -160,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p /home/node/n8n_tmp && ffmpeg -y -framerate 1 -i /home/node/n8n_tmp/anh%d.jpg -c:v libx264 -r 30 -pix_fmt yuv420p /home/node/n8n_tmp/output.mp4"
+      },
+      "id": "4301981d-de42-4f3c-ae7d-5676f030f564",
+      "name": "Chạy FFmpeg1",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        360,
+        140
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        140
+      ],
+      "id": "f8631001-9ec5-47b7-852a-cccc4d3fb385",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/n8n_tmp/output.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        580,
+        140
+      ],
+      "id": "0fff9ac6-97cf-416e-a0e6-1306790e7a60",
+      "name": "Read/Write Files from Disk"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Tải ảnh 3": {
+      "main": [
+        [
+          {
+            "node": "Lưu ảnh 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lưu ảnh 1": {
+      "main": [
+        [
+          {
+            "node": "Chạy FFmpeg1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lưu ảnh 2": {
+      "main": [
+        [
+          {
+            "node": "Chạy FFmpeg1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lưu ảnh 3": {
+      "main": [
+        [
+          {
+            "node": "Chạy FFmpeg1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tải ảnh 4": {
+      "main": [
+        [
+          {
+            "node": "Lưu ảnh 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tải ảnh 5": {
+      "main": [
+        [
+          {
+            "node": "Lưu ảnh 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Tải ảnh 3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tải ảnh 5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tải ảnh 4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chạy FFmpeg1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "07b42232-2374-4c78-b93a-8a303769dfd0",
+  "meta": {
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "z5xbua9CcZ6IdL3L",
+  "tags": []
+}

@@ -1,0 +1,181 @@
+{
+  "name": "Auto Video Upload",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        -20
+      ],
+      "id": "d2e30c63-41ee-4a68-baf8-af4235a8da14",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1oqwicz1sjTpNe_hpstABkG1NP68R_uw4uMyDTn2vdSU/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1999991990,
+          "mode": "list",
+          "cachedResultName": "T6 - content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oqwicz1sjTpNe_hpstABkG1NP68R_uw4uMyDTn2vdSU/edit#gid=1999991990"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Ngày",
+              "lookupValue": "={{ $now.plus(2, 'day').format('dd/MM/yyyy') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -220,
+        -20
+      ],
+      "id": "53b852e4-8560-431a-a764-ca3aad5f4c0e",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RbxD04n0iRrnBvYE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        0,
+        -20
+      ],
+      "id": "d832d5f2-c291-488c-acb4-59e1aac16f08",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json[\"Link video\"] }}",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        520,
+        20
+      ],
+      "id": "931ff828-11d4-428a-bb61-14ff3d84ebe7",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8HOInqziGFAvSPSE",
+          "name": "haimanhdo1999"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3398fe50-7725-40d7-91c5-b5a54d926902",
+              "name": "video_id",
+              "value": "={{ $json[\"Link video\"].split('=')[1] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        80
+      ],
+      "id": "e9da91e9-0795-41cc-a66c-2c3382a7d9b5",
+      "name": "ID video"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "ID video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID video": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2afde1f4-63cf-4f21-8282-9afbf155838e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "Jc19P2GCxvYnWxrS",
+  "tags": []
+}

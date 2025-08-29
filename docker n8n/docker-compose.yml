@@ -1,0 +1,37 @@
+services:
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: n8n-docker:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - N8N_EDITOR_BASE_URL=
+      - WEBHOOK_URL=
+      - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - EXPRESS_TRUST_PROXY=true
+      - N8N_RUNNERS_ENABLED=true
+    volumes:
+      - ./data:/home/node/.n8n
+    restart: always
+    networks:
+      - n8nnet
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    command: http n8n:5678 --domain=
+    environment:
+      - NGROK_AUTHTOKEN=
+    networks:
+      - n8nnet
+
+networks:
+  n8nnet:
+    driver: bridge

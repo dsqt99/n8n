@@ -1,0 +1,36 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=funny-rattler-thankfully.ngrok-free.app
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - N8N_EDITOR_BASE_URL=https://funny-rattler-thankfully.ngrok-free.app
+      - WEBHOOK_URL=https://funny-rattler-thankfully.ngrok-free.app
+      - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - EXPRESS_TRUST_PROXY=true
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_DEFAULT_BINARY_DATA_MODE=true
+      - N8N_PAYLOAD_SIZE_MAX=1000
+    volumes:
+      - ./data:/home/node/.n8n
+    restart: always
+    networks:
+      - n8nnet
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    command: http n8n:5678 --domain=funny-rattler-thankfully.ngrok-free.app
+    environment:
+      - NGROK_AUTHTOKEN=2yJ0gjEODOGXJlCOx8NA6H2vI12_4R7THQZsXtqzKHx84Kotr
+    networks:
+      - n8nnet
+
+networks:
+  n8nnet:
+    driver: bridge

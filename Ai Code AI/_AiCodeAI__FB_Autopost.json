@@ -1,0 +1,247 @@
+{
+  "name": "[AiCodeAI] FB Autopost",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1420,
+        200
+      ],
+      "id": "e93b2721-5200-4d44-b00f-e8ae2069b6fc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        40,
+        220
+      ],
+      "id": "309cbc1c-9806-4d2b-b3c9-9e1f86ccfd6e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "sender": "news@alphasignal.ai"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        200
+      ],
+      "id": "093cb336-ca24-48c8-9f14-f97090f858fe",
+      "name": "Gmail",
+      "webhookId": "96bb3e0c-6a5f-49c9-9d45-6459effd3b8c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "PWwKGrEeHjNQvTeK",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "Bạn là chuyên gia phân tích nội dung từ bai viết dưới đây.\nKết quả trả về dạng JSON danh sách các title bài viết và link tương ứng.\nVí dụ:\n{\n  \"title\": \"latest news\"\n  \"link\": [url of news]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -920,
+        -260
+      ],
+      "id": "0608f249-e9e9-4afc-a1e5-dc83291799d9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1140,
+        -200
+      ],
+      "id": "65fbc3de-2a1e-4496-a09f-6cb9b5a981be",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZlRBG2XGHAHFWSDI",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\n\noutput = _input.first().json.output\nclean_output = output.replace(\"```json\", \"\").replace(\"```\", \"\").strip()\nresponse = json.loads(clean_output)\n\nreturn response"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        200
+      ],
+      "id": "4885e663-b022-4830-a0fc-84316fff7037",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        200
+      ],
+      "id": "f6611246-a5a5-47d8-9f0d-b8943d50b093",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        200
+      ],
+      "id": "f280319d-565a-4177-bf63-0273e1d9ca7d"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "cssSelector": "a[target=\"_blank\"]",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -980,
+        200
+      ],
+      "id": "771f8961-1664-41dd-9b59-0b16a1fe6c55",
+      "name": "HTML"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4c2383ca-ae9e-4c33-b02e-ec7787258ee3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c3acbfb0c7c81f553ab1fb1eade76cf8a325844f94053c24d7d8fca2804f7c89"
+  },
+  "id": "V3kt4W1giokVNQhL",
+  "tags": []
+}
